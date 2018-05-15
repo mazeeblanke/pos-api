@@ -17,7 +17,7 @@ class BranchSchema extends Schema {
         .string('address', 255)
         .nullable()
       table
-        .unsigned('store_id', 255)
+        .integer('store_id', 255)
         .notNullable()
         .references('id')
         .inTable('stores')

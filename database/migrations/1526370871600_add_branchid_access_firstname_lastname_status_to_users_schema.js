@@ -11,7 +11,7 @@ class AddBranchidAccessFirstnameLastnameStatusToUsersSchema extends Schema {
       table.enu('access_level', ['admin', 'clerk', 'superadmin']);
       table.enu('status', ['active', 'inactive']);
       table
-        .unsigned('branch_id', 255)
+        .integer('branch_id', 255)
         .notNullable()
         .references('id')
         .inTable('branches')

@@ -8,14 +8,14 @@ class ProductsBranchesSchema extends Schema {
       table.increments()
       table.integer('quantity').notNullable()
       table
-        .unsigned('product_id', 255)
+        .integer('product_id', 255)
         .notNullable()
         .references('id')
         .inTable('products')
         .onDelete('cascade')
         .onUpdate('cascade');
       table
-        .unsigned('branch_id', 255)
+        .integer('branch_id', 255)
         .notNullable()
         .references('id')
         .inTable('branches')
