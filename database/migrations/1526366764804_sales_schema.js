@@ -7,7 +7,7 @@ class SalesSchema extends Schema {
     this.create('sales', (table) => {
       table.increments()
       table.timestamps()
-      table.integer('branch_id')
+      table.integer('branch_id').references('branches.id')
       table.integer('sales_id')
       table.integer('product_id').references('products.id')
       table.integer('user_id').references('users.id')

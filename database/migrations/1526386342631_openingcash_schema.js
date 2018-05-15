@@ -7,7 +7,7 @@ class OpeningcashSchema extends Schema {
     this.create('openingcashes', (table) => {
       table.increments()
       table.timestamps()
-      table.integer('brach_id')
+      table.integer('branch_id').references('branches.id')
       table.integer('from_user').references('users.id')
       table.integer('to_user').references('users.id')
       table.datetime('openingcashtime')

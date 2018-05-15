@@ -18,3 +18,10 @@ const Route = use('Route')
 Route.get('/', ({ request }) => {
   return { greeting: 'Hello world in JSON' }
 })
+
+
+Route.get('/user', ({ request }) => {
+  return { ALL_USERS: 'USER ROUTEs' }
+})
+
+Route.post('/register','RegisterController.store').middleware(['findUser'])

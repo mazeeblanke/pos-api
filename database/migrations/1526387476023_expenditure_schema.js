@@ -7,7 +7,7 @@ class ExpenditureSchema extends Schema {
     this.create('expenditures', (table) => {
       table.increments()
       table.timestamps()
-      table.integer('brach_id')
+      table.integer('branch_id').references('branches.id')
       table.datetime('expendituretime')
       table.integer('user').references('users.id')
       table.string('type')

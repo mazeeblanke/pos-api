@@ -1,7 +1,10 @@
 'use strict'
 
 class CustomerController {
-  async index () {
+  async index ({ response }) {
+    response.json({
+      greeting: 'HERE is all the customers.'
+    })
   }
 
   async create () {
