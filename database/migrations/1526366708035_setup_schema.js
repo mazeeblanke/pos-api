@@ -7,7 +7,7 @@ class SetupSchema extends Schema {
     this.create('setups', (table) => {
       table.increments()
       table.timestamps()
-      table.string('branch_id')
+      table.integer('branch_id').references('branches.id')
       table.string('email')
       table.string('store')
       table.string('address')
