@@ -36,8 +36,8 @@ class RegisterController {
     var branch_id = new_branches[0].id
 
     const user_data = request.post().user
-    var {email, password, first_name, last_name, access_level, status, username} = user_data
-    var user = await User.create({username, email, password, first_name, last_name, access_level, status, branch_id})
+    var {email, password, full_name, access_level, status, username} = user_data
+    var user = await User.create({username, email, password, full_name, access_level, status, branch_id})
 
     //payment
     if (request.post().paymentPlan !== 'trial') {
