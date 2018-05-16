@@ -1,15 +1,26 @@
 'use strict'
 
+const User = use('App/Models/User')
 class LoginController {
 
-  async store({ request, response}) {
+  async store({ request, response, auth}) {
 
-      const {username, password} = request.post().store
+      const {email, password} = request.post()
+      const user = await User.findBy('email', email)
+      const user_token = await auth.attempt(email, password)
 
-    response.status(201).json({
-      message: ' Welcome to login',
-      data: {"username": username, "password": password}
-    })
+        if (user_token) {
+          response.status(201).json({
+            message: 'Login Successful',
+            token: user_token,
+            user: user
+          })
+        } else {
+          response.status(422).json({
+            message: 'username or password not correct'
+          })
+        }
+
   }
 }
 
