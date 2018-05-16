@@ -17,7 +17,7 @@ class LoginController {
           })
         } else {
           response.status(422).json({
-            message: 'username or password not correct'
+            message: 'Username or Password not correct'
           })
         }
 

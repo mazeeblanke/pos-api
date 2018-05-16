@@ -19,18 +19,22 @@ Route.get('/', ({ request }) => {
   return { greeting: 'Hello world in JSON' }
 })
 
-
+//user routes
 Route.get('/users', 'UserController.index')
 Route.get('user/:id', 'UserController.show')
 Route.post('/user', 'UserController.store')
 Route.patch('user/:id', 'UserController.update')
 Route.delete('user/:id', 'UserController.delete')
 
+//user registeration
 Route.post('/register','RegisterController.store').middleware(['findUserByEmail'])
-Route.post('/login','LoginController.store')
 
+//user login
+Route.post('/login','LoginController.store')..validator('StoreUser')
 
-
+//sales
+Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
+Route.post('/sales','SaleController.store')
 
 
 

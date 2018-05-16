@@ -1,7 +1,8 @@
 'use strict'
 
 class SaleController {
-  async index () {
+  async index ({ response }) {
+
   }
 
   async create () {
