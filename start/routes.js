@@ -20,8 +20,23 @@ Route.get('/', ({ request }) => {
 })
 
 
-Route.get('/user', ({ request }) => {
-  return { ALL_USERS: 'USER ROUTEs' }
-})
+Route.get('/users', 'UserController.index')
+Route.get('user/:id', 'UserController.show')
+Route.post('/user', 'UserController.store')
+Route.patch('user/:id', 'UserController.update')
+Route.delete('user/:id', 'UserController.delete')
 
-Route.post('/register','RegisterController.store').middleware(['findUser'])
+Route.post('/register','RegisterController.store').middleware(['findUserByEmail'])
+Route.post('/login','LoginController.store')
+
+
+
+
+
+
+// Customers
+// Route.get('customers', 'CustomerController.index')
+// Route.get('customers/:id', 'CustomerController.show')
+// Route.post('customers', 'CustomerController.store')
+// Route.patch('customers/:id', 'CustomerController.update')
+// Route.delete('customers/:id', 'CustomerController.delete')
