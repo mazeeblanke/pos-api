@@ -15,8 +15,8 @@ class PaymentSchema extends Schema {
         .onUpdate('cascade')
       table.string('license_key').nullable()
       table.boolean('paid').defaultTo(false)
-      table.date('trial_ends_at')
-      table.date('trial_starts_at')
+      table.date('trial_ends_at').nullable()
+      table.date('trial_starts_at').nullable()
       table.timestamps()
     })
   }

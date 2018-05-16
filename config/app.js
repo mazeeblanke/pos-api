@@ -14,6 +14,8 @@ module.exports = {
   */
   appKey: Env.get('APP_KEY'),
 
+  trialLengthInDays: 30,
+
   http: {
     /*
     |--------------------------------------------------------------------------
