@@ -40,6 +40,10 @@ class RegisterController {
     var {email, password, full_name, access_level, status, username} = user_data
     var user = await User.create({username, email, password, full_name, access_level, status, branch_id})
 
+    await user.load('branch')
+
+    user.store =  store
+
     //payment
     if (request.post().paymentPlan !== 'trial') {
       trial_ends_at = null
