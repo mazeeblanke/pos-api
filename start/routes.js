@@ -35,6 +35,7 @@ Route.post('/login','LoginController.store').validator('StoreUser')
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
 Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
+Route.get('/sale/:id','SaleController.show')
 
 //products
 Route.get('/products','ProductController.index')
