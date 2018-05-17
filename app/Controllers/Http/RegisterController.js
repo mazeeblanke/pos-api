@@ -17,17 +17,18 @@ class RegisterController {
     let license_key
 
     // Create Store
-    var {name, email} = request.post().store
-    var store = await Store.create({name, email})
+    var { name, email, currency } = request.post().store;
+    var store = await Store.create({name, email, currency})
+    console.log(store)
     const store_id = store.id
 
     // Create Branches
     const branches = request.post().branches
     const new_branches = []
     for (let branch of branches) {
-      var {email, name, address} = branch
+      var { email, name, address, currency } = branch;
       if (email && name && address) {
-        const branch = await Branch.create({email, name, address, store_id})
+        const branch = await Branch.create({email, name, address, store_id, currency})
         new_branches.push(branch)
       }
     }
@@ -38,7 +39,7 @@ class RegisterController {
     // create user
     const user_data = request.post().user
     var {email, password, full_name, access_level, status, username} = user_data
-    var user = await User.create({username, email, password, full_name, access_level, status, branch_id})
+    var user = await User.create({username, email, password, full_name, access_level, status, branch_id, store_id})
 
     await user.load('branch')
 

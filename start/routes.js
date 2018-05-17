@@ -30,13 +30,14 @@ Route.delete('user/:id', 'UserController.delete')
 Route.post('/register','RegisterController.store').middleware(['findUserByEmail'])
 
 //user login
-Route.post('/login','LoginController.store')..validator('StoreUser')
+Route.post('/login','LoginController.store')
 
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
 Route.post('/sales','SaleController.store')
 
-
+//settings
+Route.get('/settings', 'SettingController.index').middleware(['authenticateToken'])
 
 // Customers
 // Route.get('customers', 'CustomerController.index')
