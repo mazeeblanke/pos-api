@@ -21,23 +21,30 @@ Route.get('/', ({ request }) => {
 
 //user routes
 Route.get('/users', 'UserController.index')
-Route.get('user/:id', 'UserController.show')
+Route.get('/user/:id', 'UserController.show')
 Route.post('/user', 'UserController.store')
-Route.patch('user/:id', 'UserController.update')
-Route.delete('user/:id', 'UserController.delete')
+Route.patch('/user/:id', 'UserController.update')
+Route.delete('/user/:id', 'UserController.delete')
 
 //user registeration
 Route.post('/register','RegisterController.store').middleware(['findUserByEmail'])
 
 //user login
-Route.post('/login','LoginController.store')
+Route.post('/login','LoginController.store').validator('StoreUser')
 
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
-Route.post('/sales','SaleController.store')
+Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
+Route.get('/sale/:id','SaleController.show')
 
-//settings
-Route.get('/settings', 'SettingController.index').middleware(['authenticateToken'])
+//products
+Route.get('/products','ProductController.index')
+Route.get('/product/:id', 'ProductController.show')
+Route.post('/product', 'ProductController.check')
+Route.post('/products', 'ProductController.store')
+
+// 15949
+
 
 // Customers
 // Route.get('customers', 'CustomerController.index')
