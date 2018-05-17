@@ -15,15 +15,14 @@ class UserController {
 
     const user = await User.find(id)
 
-    if(user) {
+    if (user) {
       response.status(200).json({
         message: 'Single User',
         data: user
       })
-    }
-    else {
+    } else {
       response.status(404).json({
-        message: 'User not not found!',
+        message: 'User not found!',
         id
       })
     }
@@ -41,6 +40,7 @@ class UserController {
       data: user
     })
   }
+  
   async update({ request, response, params: { id } }) {
     const user = await User.find(id)
 

@@ -1,5 +1,6 @@
 'use strict'
 
+
 class SetupController {
   async index () {
   }
