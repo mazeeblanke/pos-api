@@ -42,7 +42,7 @@ Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
 Route.get('/sale/:id','SaleController.show')
 
 //products
-Route.get('/products','ProductController.index')
+Route.get('/products','ProductController.index').middleware(['authenticateToken'])
 Route.get('/product/:id', 'ProductController.show')
 Route.post('/product', 'ProductController.check')
 Route.post('/products', 'ProductController.store')
