@@ -32,33 +32,21 @@ class SettingController {
 
   async update({ request, response, auth}) {
     let loggedInUser = await auth.getUser()
-    const { branch_new, store_new } = request.post()
-    const branch_old = await loggedInUser.branch().first()
-    const store_old = await loggedInUser.store().first()
+    const { branch, store } = request.post()
+    const _branch = await loggedInUser.branch().first()
+    const _store = await loggedInUser.store().first()
 
-    branch_old.name = branch_new.name
-    branch_old.email = branch_new.email
-    branch_old.address = branch_new.address
-    branch_old.receiptinfo = branch_new.receiptinfo
-    branch_old.currency = JSON.stringify(branch_new.currency)
-    branch_old.printout = branch_new.printout
-    branch_old.threshold = branch_new.threshold
-    branch_old.discount = branch_new.discount
+    _branch.merge(branch)
+    _store.merge(store)
 
-    store_old.name = store_new.name
-    store_old.email = store_new.email
-    store_old.tax = JSON.stringify(store_new.tax)
-    store_old.phone = store_new.phone
-    store_old.currency = JSON.stringify(store_new.currency)
-
-    // await branch_old.save()
-    await store_old.save()
+    await _branch.save()
+    await _store.save()
 
     response.status(201).json({
       message: "Settings Added",
       payload: {
-        store_old,
-        branch_old
+        _store,
+        _branch
       }
     })
 
