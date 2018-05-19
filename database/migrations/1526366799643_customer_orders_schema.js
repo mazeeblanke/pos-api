@@ -7,8 +7,9 @@ class CustomerOrdersSchema extends Schema {
     this.create('customer_orders', (table) => {
       table.increments()
       table.timestamps()
+      table.integer('sales_id')
       table.integer('customer_id').references('customers.id')
-      table.integer('sales_id').references('sales.id')
+      table.string('gross')
     })
   }
 

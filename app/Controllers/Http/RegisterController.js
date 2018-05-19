@@ -29,7 +29,7 @@ class RegisterController {
     const branches = request.post().branches
     const new_branches = []
     for (let branch of branches) {
-      var { email, name, address, currency } = branch;
+      var { email, name, address, currency } = branch
       if (email && name && address) {
         const branch = await Branch.create({email, name, address, store_id, currency})
         new_branches.push(branch)
