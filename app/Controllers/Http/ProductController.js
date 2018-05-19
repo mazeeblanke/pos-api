@@ -7,12 +7,28 @@ class ProductController {
     const limit = reqData.limit || 20
     const name = reqData.name || ''
     const page = reqData.page || 1
-    const products = await Product.query().where('name', 'like', `%${name}%`).paginate(page, limit)
+    let branch_id;
+    if (branch_id = reqData.branch_id) {
+      const products = await Product
+      .query()
+      .where('name', 'like', `%${name}%`)
+      .whereHas('branches', (builder) => {
+        builder.where('branch_id', branch_id)
+      })
+      .with('branches', builder => {
+        builder.where('branch_id', branch_id)
+      })
+      .paginate(page, limit)
 
-    response.status(200).json({
-      message: 'All Product',
-      products
-    })
+      response.status(200).json({
+        message: 'All Product',
+        products
+      })
+    } else {
+      response.status(400).json({
+        message: 'Branch id not selected',
+      })
+    }
   }
 
   async create () {
