@@ -34,6 +34,7 @@ Route.post('/login','LoginController.store').validator('StoreUser')
 
 //settings
 Route.get('/settings','SettingController.index').middleware(['authenticateToken'])
+Route.post('/settings','SettingController.update').middleware(['authenticateToken'])
 
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
