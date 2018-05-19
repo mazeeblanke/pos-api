@@ -2,12 +2,16 @@
 
 const Product = use('App/Models/Product')
 class ProductController {
-  async index ({ response }) {
-    const products = await Product.all()
+  async index ({ request, response }) {
+    const reqData = request.all()
+    const limit = reqData.limit || 20
+    const name = reqData.name || ''
+    const page = reqData.page || 1
+    const products = await Product.query().where('name', 'like', `%${name}%`).paginate(page, limit)
 
     response.status(200).json({
       message: 'All Product',
-      data: products
+      products
     })
   }
 

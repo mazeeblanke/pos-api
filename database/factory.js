@@ -11,12 +11,16 @@
 |
 */
 
-// const Factory = use('Factory')
+const Factory = use('Factory')
 
-/**
-  Factory.blueprint('App/Models/User', (faker) => {
-    return {
-      username: faker.username()
-    }
-  })
-*/
+Factory.blueprint('App/Models/Product', (faker) => {
+  return {
+    name: faker.name(),
+    quantity: faker.integer({ min: 20, max: 2000 }),
+    unitprice: faker.floating({ min: 100, max: 500 }),
+    costprice: faker.floating({ min: 0, max: 100 }),
+    barcode: faker.string(),
+    status: 'active'
+  }
+})
+

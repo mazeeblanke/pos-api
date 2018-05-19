@@ -5,7 +5,11 @@ const Model = use('Model')
 class Branch extends Model {
 
   getCurrency (currency) {
-    return JSON.parse(currency)
+    console.log(currency)
+    if (! currency instanceof Object) {
+      return JSON.parse(currency)
+    }
+    return currency
   }
 
   store() {
