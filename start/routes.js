@@ -47,7 +47,8 @@ Route.get('/product/:id', 'ProductController.show')
 Route.post('/product', 'ProductController.check')
 Route.post('/products', 'ProductController.store')
 
-// 15949
+//branch
+Route.get('/branch', 'BranchController.index')
 
 
 // Customers
