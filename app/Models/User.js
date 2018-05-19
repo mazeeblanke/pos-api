@@ -31,11 +31,11 @@ class User extends Model {
   }
 
   branch() {
-    return this.belongsTo("App/Models/branch", "branch_id");
+    return this.belongsTo("App/Models/Branch", "branch_id");
   }
 
   store() {
-    return this.belongsTo("App/Models/store", "branch_id");
+    return this.belongsTo("App/Models/Store", "store_id");
   }
 
 }
