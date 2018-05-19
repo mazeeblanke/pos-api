@@ -16,11 +16,14 @@ class RegisterController {
     let trial_starts_at = moment().format()
     let license_key
 
+    console.log('here 1')
     // Create Store
     var { name, email, currency } = request.post().store;
     var store = await Store.create({name, email, currency})
     console.log(store)
     const store_id = store.id
+
+    console.log('here 2')
 
     // Create Branches
     const branches = request.post().branches
@@ -33,6 +36,8 @@ class RegisterController {
       }
     }
 
+    console.log('here 3')
+
     // HQ branch ID
     var branch_id = new_branches[0].id
 
@@ -44,6 +49,9 @@ class RegisterController {
     await user.load('branch')
 
     user.store =  store
+
+    console.log('here 4')
+
 
     //payment
     if (request.post().paymentPlan !== 'trial') {
@@ -60,6 +68,8 @@ class RegisterController {
       trial_ends_at,
       trial_starts_at,
     })
+
+    console.log('here 4')
 
     // Authenticate
     console.log("detail: ", email,password)
