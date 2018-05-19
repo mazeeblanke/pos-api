@@ -34,6 +34,7 @@ Route.post('/login','LoginController.store').validator('StoreUser')
 
 //settings
 Route.get('/settings','SettingController.index').middleware(['authenticateToken'])
+Route.post('/settings','SettingController.update').middleware(['authenticateToken'])
 
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
@@ -46,7 +47,8 @@ Route.get('/product/:id', 'ProductController.show')
 Route.post('/product', 'ProductController.check')
 Route.post('/products', 'ProductController.store')
 
-// 15949
+//branch
+Route.get('/branch', 'BranchController.index')
 
 
 // Customers
