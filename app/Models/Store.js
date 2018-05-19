@@ -7,6 +7,10 @@ class Store extends Model {
   //   return JSON.parse(currency)
   // }
 
+  setTax (value) {
+    return JSON.stringify(value)
+  }
+
   branches() {
     return this.hasMany('App/Models/Branch')
   }
