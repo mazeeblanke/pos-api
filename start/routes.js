@@ -50,8 +50,8 @@ Route.post('/products', 'ProductController.store')
 
 
 // Customers
-// Route.get('customers', 'CustomerController.index')
-// Route.get('customers/:id', 'CustomerController.show')
-// Route.post('customers', 'CustomerController.store')
-// Route.patch('customers/:id', 'CustomerController.update')
-// Route.delete('customers/:id', 'CustomerController.delete')
+Route.get('/customers', 'CustomerController.index')
+Route.get('/customers/:id', 'CustomerController.show')
+Route.post('/customers', 'CustomerController.store')
+Route.patch('/customer/:id', 'CustomerController.update')
+Route.delete('/customer/:id', 'CustomerController.delete')

@@ -35,7 +35,11 @@ class User extends Model {
   }
 
   store() {
+<<<<<<< HEAD
+    return this.belongsTo("App/Models/Store", "branch_id");
+=======
     return this.belongsTo("App/Models/Store", "store_id");
+>>>>>>> 08e0b4053d0674ae3030ce42053a5d31e70c8660
   }
 
 }

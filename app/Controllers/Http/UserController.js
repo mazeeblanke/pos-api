@@ -40,7 +40,7 @@ class UserController {
       data: user
     })
   }
-  
+
   async update({ request, response, params: { id } }) {
     const user = await User.find(id)
 
@@ -63,7 +63,7 @@ class UserController {
       })
     } else {
       response.status(404).json({
-        message: 'Customer not found',
+        message: 'User not found',
         id
       })
     }
@@ -81,7 +81,7 @@ class UserController {
       })
     } else {
       response.status(404).json({
-        message: 'Customer not found',
+        message: 'User not found',
         id
       })
     }
