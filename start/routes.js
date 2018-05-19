@@ -32,6 +32,9 @@ Route.post('/register','RegisterController.store').middleware(['findUserByEmail'
 //user login
 Route.post('/login','LoginController.store').validator('StoreUser')
 
+//settings
+Route.get('/settings','SettingController.index').middleware(['authenticateToken'])
+
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
 Route.post('/sales','SaleController.store').middleware(['authenticateToken'])

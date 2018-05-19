@@ -4,8 +4,8 @@ const User = use('App/Models/User')
 class SettingController {
   async index({ request, response, auth }) {
     let loggedInUser = await auth.getUser()
-    const branch = await loggedInUser.branch()
-    const store= await loggedInUser.store()
+    const branch = await loggedInUser.branch().first()
+    const store= await loggedInUser.store().first()
     response
       .status(200)
       .json({
