@@ -51,7 +51,7 @@ class SettingController {
     store_old.phone = store_new.phone
     store_old.currency = JSON.stringify(store_new.currency)
 
-    // await branch_old.save()
+    await branch_old.save()
     await store_old.save()
 
     response.status(201).json({

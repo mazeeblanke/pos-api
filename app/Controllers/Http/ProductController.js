@@ -10,7 +10,7 @@ class ProductController {
     const products = await Product.query().where('name', 'like', `%${name}%`).paginate(page, limit)
 
     response.status(200).json({
-      message: 'All Product',
+      messag  e: 'All Product',
       products
     })
   }
