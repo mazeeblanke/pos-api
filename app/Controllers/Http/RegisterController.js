@@ -6,6 +6,8 @@ const Branch = use('App/Models/Branch')
 const Payment = use('App/Models/Payment')
 const Config = use('Config')
 const moment = require('moment')
+const Mail = use('Mail')
+const randomString = require('random-string')
 
 class RegisterController {
 
@@ -44,13 +46,18 @@ class RegisterController {
     // create user
     const user_data = request.post().user
     var {email, password, full_name, access_level, status, username} = user_data
-    var user = await User.create({username, email, password, full_name, access_level, status, branch_id, store_id})
+    var user = await User.create({username, email, password,confirmation_token: randomString({length: 40}), full_name, access_level, status, branch_id, store_id})
+
+    await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
+      message
+        .to(user.email)
+        .from('admin_pos@axximuth.com')
+        .subject('Please confirm your email')
+    })
 
     await user.load('branch')
 
     user.store =  store
-
-    console.log('here 4')
 
 
     //payment
@@ -69,16 +76,30 @@ class RegisterController {
       trial_starts_at,
     })
 
-    console.log('here 4')
+
 
     // Authenticate
     console.log("detail: ", email,password)
     const user_token = await auth.attempt(email, password)
 
-
     response.status(201).json({
       message: 'Successfully created.',
       data: {"store": store, "branch" : new_branches, "user" : user, "token": user_token}
+    })
+  }
+
+  async confirmEmail ({ request, response, params }) {
+    const user = await User.findBy('confirmation_token', params.token)
+
+    user.confirmation_token = null
+    user.is_active = true
+
+    await user.save()
+
+
+    response.status(201).json({
+      message: 'Account Confirmed.',
+      payload: user
     })
   }
 }

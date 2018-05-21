@@ -28,6 +28,7 @@ Route.delete('/user/:id', 'UserController.delete')
 
 //user registeration
 Route.post('/register','RegisterController.store').middleware(['findUserByEmail'])
+Route.get('/register/confirm/:token', 'RegisterController.confirmEmail')
 
 //user login
 Route.post('/login','LoginController.store').validator('StoreUser')

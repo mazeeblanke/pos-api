@@ -8,7 +8,7 @@ class LoginController {
   async store({ request, response, auth}) {
 
       const {email, password} = request.post()
-      const user = await User.query().where({ email }).with('branch.store').first()                   
+      const user = await User.query().where({ email }).with('branch.store').first()
       const user_token = await auth.attempt(email, password)
 
         if (user_token) {
