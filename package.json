@@ -28,11 +28,8 @@
     "@adonisjs/validator": "^5.0.3",
     "@adonisjs/vow": "^1.0.15",
     "pg": "^7.4.3",
-<<<<<<< HEAD
-    "random-string": "^0.2.0"
-=======
+    "random-string": "^0.2.0",
     "url-parse": "^1.4.0"
->>>>>>> 9da0e9ba2a7d04731512eaaed819f76fc2806eb5
   },
   "devDependencies": {},
   "autoload": {
