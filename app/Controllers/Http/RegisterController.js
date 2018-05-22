@@ -21,7 +21,7 @@ class RegisterController {
     var { name, email, currency } = request.post().store;
 
     let store = await Store.create({name, email, currency })
-  
+
     const store_id = store.id
 
     const branches = request.post().branches
@@ -53,11 +53,6 @@ class RegisterController {
 
     user.store =  store
 
-<<<<<<< HEAD
-
-    //payment
-=======
->>>>>>> 9da0e9ba2a7d04731512eaaed819f76fc2806eb5
     if (request.post().paymentPlan !== 'trial') {
       trial_ends_at = null
       trial_starts_at = null
@@ -73,20 +68,10 @@ class RegisterController {
       trial_starts_at,
     })
 
-<<<<<<< HEAD
-
-
-    // Authenticate
-    console.log("detail: ", email,password)
-    const user_token = await auth.attempt(email, password)
-
-    response.status(201).json({
-=======
     const user_token = await auth.attempt(email, password)
 
 
     response.status(200).json({
->>>>>>> 9da0e9ba2a7d04731512eaaed819f76fc2806eb5
       message: 'Successfully created.',
       data: {"store": store, "branch" : new_branches, "user" : user, "token": user_token}
     })
