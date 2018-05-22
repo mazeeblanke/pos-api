@@ -2,6 +2,8 @@
 
 const User = use('App/Models/User')
 const Store = use('App/Models/Store')
+const gravatar = require('gravatar-api')
+
 
 class LoginController {
 
@@ -15,7 +17,13 @@ class LoginController {
         response.status(200).json({
           message: 'Login Successful',
           token: user_token,
-          user: user,
+          user: {
+            ...user.toJSON(),
+            gravatar: gravatar.imageUrl({
+              email: user.email,
+              parameters: { "size": "200", "d": "retro" },
+            })
+          }
         })
       } else {
         response.status(422).json({

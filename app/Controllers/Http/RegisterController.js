@@ -6,6 +6,7 @@ const Branch = use('App/Models/Branch')
 const Payment = use('App/Models/Payment')
 const Config = use('Config')
 const moment = require('moment')
+const gravatar = require('gravatar-api')
 
 class RegisterController {
 
@@ -64,7 +65,18 @@ class RegisterController {
 
     response.status(200).json({
       message: 'Successfully created.',
-      data: {"store": store, "branch" : new_branches, "user" : user, "token": user_token}
+      data: {
+        store: store, 
+        branch: new_branches, 
+        user: {
+          ...user.toJSON(),
+          gravatar: gravatar.imageUrl({
+            email: user.email,
+            parameters: { "size": "200", "d": "retro" }
+          }),
+        },
+        token: user_token
+      }
     })
   }
 }
