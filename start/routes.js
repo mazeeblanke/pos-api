@@ -27,8 +27,12 @@ Route.patch('/user/:id', 'UserController.update')
 Route.delete('/user/:id', 'UserController.delete')
 
 //user registeration
+<<<<<<< HEAD
 Route.post('/register','RegisterController.store').middleware(['findUserByEmail'])
 Route.get('/register/confirm/:token', 'RegisterController.confirmEmail')
+=======
+Route.post('/register','RegisterController.store')
+>>>>>>> 9da0e9ba2a7d04731512eaaed819f76fc2806eb5
 
 //user login
 Route.post('/login','LoginController.store').validator('StoreUser')

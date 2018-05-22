@@ -18,17 +18,17 @@ class LoginController {
       const user = await User.query().where({ email }).with('branch.store').first()
       const user_token = await auth.attempt(email, password)
 
-        if (user_token) {
-          response.status(201).json({
-            message: 'Login Successful',
-            token: user_token,
-            user: user,
-          })
-        } else {
-          response.status(422).json({
-            message: 'Username or Password not correct'
-          })
-        }
+      if (user_token) {
+        response.status(200).json({
+          message: 'Login Successful',
+          token: user_token,
+          user: user,
+        })
+      } else {
+        response.status(422).json({
+          message: 'Email or Password not correct'
+        })
+      }
 
   }
 }
