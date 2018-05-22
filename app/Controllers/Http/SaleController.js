@@ -19,7 +19,7 @@ class SaleController {
     let loggedInUser = await auth.getUser()
     // const { branch_id, sales_id, product_id, user_id, unit_price, quantity, total, salestime, discount, tax} =  request.post()
     // const sale = await Sales.create({ branch_id, sales_id, product_id, user_id, unit_price, quantity, total, salestime, discount, tax})
-       let user_id = loggedInUser.id
+      let user_id = loggedInUser.id
       let branch_id = loggedInUser.branch_id
       let store_id = loggedInUser.store_id
       let sales_record = []
