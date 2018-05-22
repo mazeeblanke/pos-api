@@ -46,7 +46,7 @@ class RegisterController {
     // create user
     const user_data = request.post().user
     var {email, password, full_name, access_level, status, username} = user_data
-    var user = await User.create({username, email, password,confirmation_token: randomString({length: 40}), full_name, access_level, status, branch_id, store_id})
+    var user = await User.create({username, email, password, full_name, access_level, status, branch_id, store_id})
 
     await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
       message

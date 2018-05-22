@@ -61,5 +61,5 @@ Route.delete('/customer/:id', 'CustomerController.delete')
 
 
 //passwword
-Route.post('password/reset', 'PasswordController.sendResetLinkEmail')
-// Route.post('password/email', 'PasswordController.sendResetLinkEmail')
+Route.post('/password/emailcode', 'PasswordController.sendResetLinkEmail')
+Route.post('/password/resetpassword', 'PasswordController.resetPassword')
