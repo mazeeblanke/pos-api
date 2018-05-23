@@ -98,7 +98,6 @@ class SaleController {
   }
 
   async show ({ response, params: { id }}) {
-    // const sale = await Sales.find(id)
     const sale = await Sales.query().where({sales_id:id})
 
     if (sale.length) {
