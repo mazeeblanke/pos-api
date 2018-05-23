@@ -3,8 +3,7 @@
 const Sales = use('App/Models/Sale')
 const Customer_Orders = use('App/Models/CustomerOrder')
 const SaleDetail = use('App/Models/SaleDetail')
-// const Store_inventory = use('App/Models/Product')
-// const Branch_inventory = use('App/Models/ProductsBranch')
+const Branch_inventory = use('App/Models/ProductsBranch')
 
 
 class SaleController {
@@ -23,10 +22,10 @@ class SaleController {
   async store ({ response, request, auth }) {
 
     let loggedInUser = await auth.getUser()
-    
+
     let user_id = loggedInUser.id
 
-    let { 
+    let {
       amountPaid,
       total,
       cashChange,
@@ -35,8 +34,8 @@ class SaleController {
       taxTotal,
       branch_id,
       store_id,
-      customer_id, 
-      sales_id, 
+      customer_id,
+      sales_id,
       tax,
       payment_type,
       products,
@@ -73,7 +72,7 @@ class SaleController {
         product_id,
         store_id,
         branch_id,
-        unit_price, 
+        unit_price,
         quantity,
         payment_type,
         sale_details_id: _SaleDetail.id,
@@ -81,6 +80,19 @@ class SaleController {
       }
     })
     .filter(p => p)
+
+    for(let item of products) {
+      // item.product_id
+      // item.branch_id
+      // item.store_id
+      // item.quantity
+
+      const product_branch = await Branch_inventory.query().where('branch_id', item.branch_id).where('product_id', item.product_id).first()
+      product_branch.quantity = parseInt(product_branch.quantity) - parseInt(item.quantity)
+
+      await product_branch.save()
+
+    }
 
     const _products = await Sales.createMany(products)
 
