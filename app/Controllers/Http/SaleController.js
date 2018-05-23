@@ -3,6 +3,8 @@
 const Sales = use('App/Models/Sale')
 const Customer_Orders = use('App/Models/CustomerOrder')
 const SaleDetail = use('App/Models/SaleDetail')
+// const Store_inventory = use('App/Models/Product')
+// const Branch_inventory = use('App/Models/ProductsBranch')
 
 
 class SaleController {
@@ -35,9 +37,9 @@ class SaleController {
       sales_id, 
       tax,
       payment_type,
-      products, 
-      discount, 
-      customer 
+      products,
+      discount,
+      customer
     } = request.post()
 
     const _SaleDetail = await SaleDetail.create({
@@ -48,6 +50,7 @@ class SaleController {
       branch_id,
       store_id,
       payment_type,
+      amount_paid: amountPaid,
       total
     })
 
@@ -80,12 +83,7 @@ class SaleController {
     const _products = await Sales.createMany(products)
 
     if (customer_id) {
-      const gross = await request.post().total
-      const cust_ord = await Customer_Orders.create({ 
-        customer_id,
-        sale_details_id: _SaleDetail.id, 
-        gross
-      })
+      const cust_ord = await Customer_Orders.create({ customer_id, sales_id: _SaleDetail.id, gross: total })
       response.status(200).json({
         message: 'Successfully added Customer sales.',
         cust_ord,

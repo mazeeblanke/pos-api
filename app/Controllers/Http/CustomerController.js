@@ -17,7 +17,23 @@ class CustomerController {
 
   async store ({ response, request }) {
     const { first_name, last_name, phone, gender, marital_status, email, address, city, country, postalcode, cardnumber, store_id } = request.post()
-    const customer = await Customer.create({ first_name, last_name, phone, gender, marital_status, email, address, city, country, postalcode, cardnumber, store_id })
+    const customer = await Customer.create({
+      first_name,
+      last_name,
+      phone,
+      gender,
+      marital_status,
+      email,
+      address,
+      city,
+      country,
+      postalcode,
+      cardnumber,
+      store_id,
+      date_of_birth,
+      title,
+      town,
+      confirmation})
 
     response.status(201).json({
       message: "Successfully Registered customer",
