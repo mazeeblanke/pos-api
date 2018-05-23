@@ -83,7 +83,7 @@ class SaleController {
     const _products = await Sales.createMany(products)
 
     if (customer_id) {
-      const cust_ord = await Customer_Orders.create({ customer_id, sales_id: _SaleDetail.id, gross: total })
+      const cust_ord = await Customer_Orders.create({ customer_id, sale_details_id: _SaleDetail.id, gross: total })
       response.status(200).json({
         message: 'Successfully added Customer sales.',
         cust_ord,

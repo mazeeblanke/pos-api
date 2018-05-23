@@ -7,7 +7,7 @@ class AddDateOfBirthTitleTownAddressConfirmationToCustomersSchema extends Schema
     this.table('customers', (table) => {
       // alter table
       table.string('title')
-      table.string('date_of_birth')
+      table.date('date_of_birth')
       table.string('town')
       table.string('confirmation')
     })
@@ -16,6 +16,10 @@ class AddDateOfBirthTitleTownAddressConfirmationToCustomersSchema extends Schema
   down () {
     this.table('customers', (table) => {
       // reverse alternations
+      table.dropColumn('title')
+      table.dropColumn('date_of_birth')
+      table.dropColumn('town')
+      table.dropColumn('confirmation')
     })
   }
 }

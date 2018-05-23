@@ -5,43 +5,40 @@ class CustomerController {
   async index ({ response }) {
     const customer = await Customer.all()
 
-
     response.status(200).json({
       message: 'All Cutomers.',
       data: customer
     })
   }
 
-  async create () {
-  }
+  async create () {}
 
   async store ({ response, request }) {
-    const { first_name, last_name, phone, gender, marital_status, email, address, city, country, postalcode, cardnumber, store_id } = request.post()
-    const customer = await Customer.create({
-      first_name,
-      last_name,
-      phone,
-      gender,
-      marital_status,
-      email,
-      address,
-      city,
-      country,
-      postalcode,
-      cardnumber,
-      store_id,
-      date_of_birth,
-      title,
-      town,
-      confirmation})
+    const customer = await Customer.create(
+      request.only([
+        'first_name',
+        'last_name',
+        'phone',
+        'gender',
+        'store_id',
+        'marital_status',
+        'email',
+        'address',
+        'city',
+        'country',
+        'postalcode',
+        'cardnumber',
+        'date_of_birth'
+      ])
+    )
 
     response.status(201).json({
-      message: "Successfully Registered customer",
+      message: 'Successfully Registered customer',
       data: customer
     })
   }
 
-  async show ({ response, params: { id }}) {
+  async show ({ response, params: { id } }) {
     const customer = await Customer.find(id)
 
     if (customer) {
@@ -57,34 +54,37 @@ class CustomerController {
     }
   }
 
-  async edit () {
-  }
+  async edit () {}
 
-  async update ({ request, response, params: {id}}) {
-    const customer = await Customer.find(id)
+  async update ({ request, response, params: { id } }) {
+    let customer = await Customer.find(id)
 
     if (customer) {
-      const { first_name, last_name, phone, gender, marital_status, email, address, city, country, postalcode, cardnumber } = request.post()
+      customer.merge(
+        request.only([
+          'first_name',
+          'last_name',
+          'phone',
+          'gender',
+          'marital_status',
+          'email',
+          'store_id',
+          'address',
+          'city',
+          'country',
+          'postalcode',
+          'cardnumber',
+          'date_of_birth'
+        ])
+      )
 
-      customer.first_name = first_name
-      customer.last_name = last_name
-      customer.phone = phone
-      customer.gender = gender
-      customer.marital_status = marital_status
-      customer.email = email
-      customer.address = address
-      customer.city = city
-      customer.country = country
-      customer.postalcode = postalcode
-      customer.cardnumber = cardnumber
-
-      await customer.save()
+      customer = await customer.save()
 
       response.status(200).json({
         message: 'Successfully update customer details,',
-        data: customer
+        customer
       })
-    } else  {
+    } else {
       response.status(404).json({
         message: 'Customer not found',
         id
@@ -92,13 +92,12 @@ class CustomerController {
     }
   }
 
-  async destroy () {
-  }
+  async destroy () {}
 
-  async delete({ response, param: { id } }) {
+  async delete ({ response, param: { id } }) {
     const customer = await Customer.find(id)
 
-    if(customer) {
+    if (customer) {
       await customer.delete()
 
       response.status(200).json({
