@@ -4,7 +4,7 @@ const Schema = use('Schema')
 
 class ProductsBranchesSchema extends Schema {
   up () {
-    this.create('products_branches', (table) => {
+    this.create('product_branches', (table) => {
       table.increments()
       table.integer('quantity').notNullable()
       table
@@ -26,7 +26,7 @@ class ProductsBranchesSchema extends Schema {
   }
 
   down () {
-    this.drop('products_branches')
+    this.drop('product_branches')
   }
 }
 

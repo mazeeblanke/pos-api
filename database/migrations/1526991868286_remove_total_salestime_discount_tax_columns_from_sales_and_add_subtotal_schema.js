@@ -20,7 +20,6 @@ class RemoveTotalSalestimeDiscountTaxColumnsFromSalesAndAddSubtotalSchema extend
       table.datetime('salestime')
       table.decimal('discount', 15, 6)
       table.decimal('tax', 15, 6)
-      table.bigInteger('sales_id')
       table.dropColumn('sub_total')
     })
   }

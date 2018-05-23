@@ -15,10 +15,10 @@ const Database = use('Database')
 
 class ProductSeeder {
   async run () {
-    await Factory.model('App/Models/Product').createMany(50)
     await Factory.model('App/Models/Store').createMany(50)
+    await Factory.model('App/Models/Product').createMany(50, { store_id: 1 })
     await Factory.model('App/Models/Branch').createMany(50, { store_id: 1 })
-    await Database.table('products_branches').insert([
+    await Database.table('product_branches').insert([
       { quantity: 100, product_id: 1, branch_id: 1}, 
       { quantity: 100, product_id: 2, branch_id: 1}, 
       { quantity: 100, product_id: 3, branch_id: 1}, 
@@ -38,6 +38,27 @@ class ProductSeeder {
       { quantity: 100, product_id: 18, branch_id: 1}, 
       { quantity: 100, product_id: 19, branch_id: 1}, 
       { quantity: 100, product_id: 20, branch_id: 1}, 
+      { quantity: 100, product_id: 21, branch_id: 1}, 
+      { quantity: 100, product_id: 22, branch_id: 1}, 
+      { quantity: 100, product_id: 23, branch_id: 1}, 
+      { quantity: 100, product_id: 24, branch_id: 1}, 
+      { quantity: 100, product_id: 25, branch_id: 1}, 
+      { quantity: 100, product_id: 26, branch_id: 1}, 
+      { quantity: 100, product_id: 27, branch_id: 1}, 
+      { quantity: 100, product_id: 28, branch_id: 1}, 
+      { quantity: 100, product_id: 29, branch_id: 1}, 
+      { quantity: 100, product_id: 30, branch_id: 1}, 
+      { quantity: 100, product_id: 31, branch_id: 1}, 
+      { quantity: 100, product_id: 32, branch_id: 1}, 
+      { quantity: 100, product_id: 33, branch_id: 1}, 
+      { quantity: 100, product_id: 34, branch_id: 1}, 
+      { quantity: 100, product_id: 35, branch_id: 1}, 
+      { quantity: 100, product_id: 36, branch_id: 1}, 
+      { quantity: 100, product_id: 37, branch_id: 1}, 
+      { quantity: 100, product_id: 38, branch_id: 1}, 
+      { quantity: 100, product_id: 39, branch_id: 1}, 
+      { quantity: 100, product_id: 40, branch_id: 1}, 
+      { quantity: 100, product_id: 41, branch_id: 1}, 
     ])
   }
 }

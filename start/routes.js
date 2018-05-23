@@ -41,6 +41,10 @@ Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
 Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
 Route.get('/sale/:id','SaleController.show')
 
+//Sales history
+Route.get('/sales-history','SaleHistoryController.index').middleware(['authenticateToken'])
+
+
 //products
 Route.get('/products','ProductController.index').middleware(['authenticateToken'])
 Route.get('/product/:id', 'ProductController.show')
@@ -49,7 +53,6 @@ Route.post('/products', 'ProductController.store')
 
 //branch
 Route.get('/branch', 'BranchController.index')
-
 
 // Customers
 Route.get('/customers', 'CustomerController.index')

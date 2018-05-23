@@ -21,9 +21,8 @@ class SaleController {
   async store ({ response, request, auth }) {
     let loggedInUser = await auth.getUser()
     let user_id = loggedInUser.id
-    let store_id = loggedInUser.store_id
-    let sales_record = []
-    const { 
+
+    let { 
       amountPaid,
       total,
       cashChange,
@@ -31,6 +30,7 @@ class SaleController {
       discountTotal,
       taxTotal,
       branch_id,
+      store_id,
       customer_id, 
       sales_id, 
       tax,
@@ -46,42 +46,55 @@ class SaleController {
       tax,
       discount,
       branch_id,
+      store_id,
       payment_type,
       total
     })
 
-    for (let product of products) {
-      if (product) {
-        var { id: product_id, name, unitprice: unit_price, quantity, subTotal: sub_total } = product
-        const sale = await Sales.create({ 
-          // branch_id,
-          // sales_id,
-          product_id,  
-          unit_price, 
-          quantity,
-          sale_details_id: _SaleDetail.id,
-          sub_total
-          // total, 
-          // discount: discountTotal, 
-          // tax: taxTotal 
-        })
-        sales_record.push(sale)
-      }
-    }
+    products = products
+    .map((p) => {
+      if (!p) return
+      let {
+        id: product_id,
+        name,
+        unitprice: unit_price,
+        quantity,
+        subTotal: sub_total
+      } = p
 
+      return {
+        sales_id,
+        user_id,
+        product_id,
+        store_id,
+        branch_id,
+        unit_price, 
+        quantity,
+        payment_type,
+        sale_details_id: _SaleDetail.id,
+        sub_total
+      }
+    })
+    .filter(p => p)
+
+    const _products = await Sales.createMany(products)
 
     if (customer_id) {
       const gross = await request.post().total
-      const cust_ord = await Customer_Orders.create({ customer_id, sales_id, gross })
+      const cust_ord = await Customer_Orders.create({ 
+        customer_id,
+        sale_details_id: _SaleDetail.id, 
+        gross
+      })
       response.status(200).json({
         message: 'Successfully added Customer sales.',
         cust_ord,
-        sales_record
+        _products
       })
     } else {
       response.status(200).json({
         message: 'Successfully added sales record.',
-        sales_record
+        _products
       })
     }
   }
@@ -111,6 +124,7 @@ class SaleController {
 
   async destroy () {
   }
+
 }
 
 module.exports = SaleController

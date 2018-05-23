@@ -13,14 +13,15 @@
 
 const Factory = use('Factory')
 
-Factory.blueprint('App/Models/Product', (faker) => {
+Factory.blueprint('App/Models/Product', (faker, i, data) => {
   return {
     name: faker.name(),
     quantity: faker.integer({ min: 20, max: 2000 }),
     unitprice: faker.floating({ min: 100, max: 500 }),
     costprice: faker.floating({ min: 0, max: 100 }),
     barcode: faker.string(),
-    status: 'active'
+    status: 'active',
+    store_id: 1
   }
 })
 

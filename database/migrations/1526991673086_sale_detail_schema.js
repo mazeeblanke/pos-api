@@ -8,6 +8,13 @@ class SaleDetailSchema extends Schema {
       table.increments()
       table.integer('branch_id').references('branches.id')
       table.integer('user_id').references('users.id')
+      table
+        .integer('store_id', 255)
+        .notNullable()
+        .references('id')
+        .inTable('stores')
+        .onDelete('cascade')
+        .onUpdate('cascade')
       table.bigInteger('sales_id')
       table.decimal('tax', 15, 6)
       table.decimal('discount', 15, 6)
