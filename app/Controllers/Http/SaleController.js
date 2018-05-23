@@ -21,7 +21,9 @@ class SaleController {
   }
 
   async store ({ response, request, auth }) {
+
     let loggedInUser = await auth.getUser()
+    
     let user_id = loggedInUser.id
 
     let { 
