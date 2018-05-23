@@ -32,6 +32,7 @@ class UserController {
 
   async store({ request, response}) {
 
+
     const {email, password, first_name, last_name, access_level, status, username,branch_id} = request.post()
     const user = await User.create({username, email, password, first_name, last_name, access_level, status, branch_id})
 

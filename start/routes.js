@@ -57,3 +57,8 @@ Route.get('/customers/:id', 'CustomerController.show')
 Route.post('/customers', 'CustomerController.store')
 Route.patch('/customer/:id', 'CustomerController.update')
 Route.delete('/customer/:id', 'CustomerController.delete')
+
+
+//passwword
+Route.post('/password/emailcode', 'PasswordController.sendResetLinkEmail')
+Route.post('/password/resetpassword', 'PasswordController.resetPassword')

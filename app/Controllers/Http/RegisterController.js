@@ -7,6 +7,8 @@ const Payment = use('App/Models/Payment')
 const Config = use('Config')
 const moment = require('moment')
 const gravatar = require('gravatar-api')
+const Mail = use('Mail')
+const randomString = require('random-string')
 
 class RegisterController {
 
@@ -20,7 +22,7 @@ class RegisterController {
     var { name, email, currency } = request.post().store;
 
     let store = await Store.create({name, email, currency })
-  
+
     const store_id = store.id
 
     const branches = request.post().branches
@@ -40,6 +42,13 @@ class RegisterController {
     var {email, password, full_name, access_level, status, username} = user_data
     let user = await User.create({username, email, password, full_name, access_level, status, branch_id, store_id})
 
+
+    await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
+      message
+        .to(user.email)
+        .from('admin_pos@axximuth.com')
+        .subject('Please confirm your email')
+    })
 
     await user.load('branch')
 
@@ -77,6 +86,21 @@ class RegisterController {
         },
         token: user_token
       }
+    })
+  }
+
+  async confirmEmail ({ request, response, params }) {
+    const user = await User.findBy('confirmation_token', params.token)
+
+    user.confirmation_token = null
+    user.is_active = true
+
+    await user.save()
+
+
+    response.status(201).json({
+      message: 'Account Confirmed.',
+      payload: user
     })
   }
 }
