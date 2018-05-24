@@ -20,7 +20,7 @@ Factory.blueprint('App/Models/Product', (faker, i, data) => {
     unitprice: faker.floating({ min: 100, max: 500 }),
     costprice: faker.floating({ min: 0, max: 100 }),
     barcode: faker.string(),
-    status: 'active',
+    status: 'active', 
     store_id: 1
   }
 })
@@ -49,7 +49,7 @@ Factory.blueprint('App/Models/Branch', (faker, i, data) => {
     name: faker.name(),
     email: faker.email(),
     address: faker.address(),
-    store_id: data.store_id, 
+    store_id: data.store_id,
     receiptinfo: faker.sentence({ words: 5 }),
     threshold: faker.integer({ min: 20, max: 2000 }),
     discount: faker.integer({ min: 0, max: 100 }),
