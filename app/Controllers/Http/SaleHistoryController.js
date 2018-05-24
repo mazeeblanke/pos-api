@@ -45,7 +45,7 @@ class SaleHistoryController {
 
     response.status(200).json({
       message: 'Successfully fetched sales history',
-      sales_history
+      body: sales_history
     })
 
   }

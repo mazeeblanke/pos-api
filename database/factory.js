@@ -20,6 +20,7 @@ Factory.blueprint('App/Models/Product', (faker, i, data) => {
     unitprice: faker.floating({ min: 100, max: 500 }),
     costprice: faker.floating({ min: 0, max: 100 }),
     barcode: faker.string(),
+    reorder: faker.integer({ min: 20, max: 2000 }),
     status: 'active',
     store_id: 1
   }
