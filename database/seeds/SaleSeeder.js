@@ -14,10 +14,10 @@ const Factory = use('Factory')
 const Database = use('Database')
 
 class SaleSeeder {
-  async run () {
-    const sale = await 
+  // async run () {
+  //   const sale = await 
 
-  }
+  // }
 }
 
 module.exports = SaleSeeder

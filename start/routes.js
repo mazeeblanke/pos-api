@@ -52,7 +52,7 @@ Route.post('/product', 'ProductController.check')
 Route.post('/products', 'ProductController.store')
 
 //branch
-Route.get('/branch', 'BranchController.index')
+Route.get('/branches', 'BranchController.index')
 
 // Customers
 Route.get('/customers', 'CustomerController.index')
