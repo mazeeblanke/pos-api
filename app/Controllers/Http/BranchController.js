@@ -10,7 +10,7 @@ class BranchController {
     const store_id = loggedInUser.store_id
     const reqData = request.all()
     const limit = reqData.limit || 10
-    const name = reqData.namae || ''
+    const name = reqData.name || ''
     const page = reqData.page || 1
     const branches = await Branch.query()
       .where('store_id', store_id)

@@ -41,7 +41,8 @@ Factory.blueprint('App/Models/Store', (faker) => {
     name: faker.name(),
     email: faker.email(),
     phone: faker.phone(),
-    currency: {}
+    currency: {},
+    tax: null
   }
 })
 
@@ -54,6 +55,7 @@ Factory.blueprint('App/Models/Branch', (faker, i, data) => {
     receiptinfo: faker.sentence({ words: 5 }),
     threshold: faker.integer({ min: 20, max: 2000 }),
     discount: faker.integer({ min: 0, max: 100 }),
-    currency: {}
+    currency: {},
+    printout: 'receipt'
   }
 })

@@ -8,7 +8,7 @@ class AddPrintoutCurrencyReceiptinfoColumnsToBranchesSchema extends Schema {
       // alter table
       table.text('receiptinfo').nullable()
       table.string('currency').notNullable()
-      table.string('printout').notNullable().defaultTo('receipt')
+      table.string('printout').notNullable()
     })
   }
 
