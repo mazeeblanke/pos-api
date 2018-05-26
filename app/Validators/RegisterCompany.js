@@ -7,33 +7,44 @@ class Register {
   get rules() {
     return {
       // validation rules
+
+      //USER
       'user.email': 'required|email',
       'user.password': 'required',
       'user.full_name': 'required',
-      // 'user.access_level': 'required',
-      // user.status: 'required',
-      // user.username: 'required'
+      'user.access_level': 'required',
+      'user.status': 'required',
+      'user.username': 'required',
 
-      // branches: [{
-      //   email: 'required|email',
-      //   name: 'required',
-      //   address: 'required'
-      // }],
+      //BRANCHES
+      'branches.*.email': 'required|email',
+      'branches.*.name': 'required',
+      'branches.*.address': 'required',
 
-      // 'store.name': 'required',
-      // 'store.email': 'required',
-      // user: 'required',
-      // store: 'required',
-      // branches: 'required',
-      // paymentPlan: 'required'
-      // store: {
-      //   name: 'required',
-      //   email: 'required|email'
-      // }
+      'branches.*.currency.symbol': 'required',
+      'branches.*.currency.name': 'required',
+      'branches.*.currency.symbol_native': 'required',
+      'branches.*.currency.decimal_digits': 'required',
+      'branches.*.currency.rounding': 'required',
+      'branches.*.currency.code': 'required',
+      'branches.*.currency.name_plural': 'required',
+
+      'paymentPlan': 'required',
+
+      //STORE
+      'store.name': 'required',
+      'store.email': 'required|email',
+      'store.currency.symbol': 'required',
+      'store.currency.name': 'required',
+      'store.currency.symbol_native': 'required',
+      'store.currency.decimal_digits': 'required',
+      'store.currency.rounding': 'required',
+      'store.currency.code': 'required',
+      'store.currency.name_plural': 'required',
     }
   }
 
-  get validateAll () {
+  get validateAll() {
     return true
   }
 
@@ -41,10 +52,18 @@ class Register {
     return this.ctx.response.send(errorMessages)
   }
 
-  get messages () {
+  get messages() {
     return {
-      'user.email.required': 'hshd sdhs dsd hsdshd',
-      'user.email.email': 'wej shakalaka boom'
+      //USER
+      'user.email.required': '{{ field }} is required to create a new account',
+      'user.email.email': 'Enter a valid email address.',
+      'user.password.required': '{{ field }} is required to create a new account',
+      'user.full_name.required': '{{ field }} is required to create a new account',
+      'user.access_level.required': '{{ field }} is required to create a new account',
+      'user.status.required': '{{ field }} is required to create a new account',
+      'user.username.required': 'Please choose a unique username for your account'
+
+      //BRANCH
     }
 
   }
