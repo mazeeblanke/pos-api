@@ -27,7 +27,7 @@ Route.patch('/user/:id', 'UserController.update')
 Route.delete('/user/:id', 'UserController.delete')
 
 //user registeration
-Route.post('/register','RegisterController.store')
+Route.post('/register','RegisterController.store').validator('RegisterCompany')
 
 //user login
 Route.post('/login','LoginController.store').validator('StoreUser')

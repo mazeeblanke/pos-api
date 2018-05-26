@@ -3,9 +3,7 @@
 const Sales = use('App/Models/Sale')
 const Customer_Orders = use('App/Models/CustomerOrder')
 const SaleDetail = use('App/Models/SaleDetail')
-// const Store_inventory = use('App/Models/Product')
-// const Branch_inventory = use('App/Models/ProductsBranch')
-
+const Branch_inventory = use('App/Models/ProductsBranch')
 
 class SaleController {
   async index ({ response }) {
@@ -17,16 +15,14 @@ class SaleController {
     })
   }
 
-  async create () {
-  }
+  async create () {}
 
   async store ({ response, request, auth }) {
-
     let loggedInUser = await auth.getUser()
-    
+
     let user_id = loggedInUser.id
 
-    let { 
+    let {
       amountPaid,
       total,
       cashChange,
@@ -35,8 +31,8 @@ class SaleController {
       taxTotal,
       branch_id,
       store_id,
-      customer_id, 
-      sales_id, 
+      customer_id,
+      sales_id,
       tax,
       payment_type,
       products,
@@ -57,35 +53,50 @@ class SaleController {
     })
 
     products = products
-    .map((p) => {
-      if (!p) return
-      let {
-        id: product_id,
-        name,
-        unitprice: unit_price,
-        quantity,
-        subTotal: sub_total
-      } = p
+      .map(p => {
+        if (!p) return
+        let {
+          id: product_id,
+          name,
+          unitprice: unit_price,
+          quantity,
+          subTotal: sub_total
+        } = p
 
-      return {
-        sales_id,
-        user_id,
-        product_id,
-        store_id,
-        branch_id,
-        unit_price, 
-        quantity,
-        payment_type,
-        sale_details_id: _SaleDetail.id,
-        sub_total
-      }
-    })
-    .filter(p => p)
+        return {
+          sales_id,
+          user_id,
+          product_id,
+          store_id,
+          branch_id,
+          unit_price,
+          quantity,
+          payment_type,
+          sale_details_id: _SaleDetail.id,
+          sub_total
+        }
+      })
+      .filter(p => p)
+
+    for (let item of products) {
+      const product_branch = await Branch_inventory.query()
+        .where('branch_id', item.branch_id)
+        .where('product_id', item.product_id)
+        .first()
+      product_branch.quantity =
+        parseInt(product_branch.quantity) - parseInt(item.quantity)
+
+      await product_branch.save()
+    }
 
     const _products = await Sales.createMany(products)
 
     if (customer_id) {
-      const cust_ord = await Customer_Orders.create({ customer_id, sale_details_id: _SaleDetail.id, gross: total })
+      const cust_ord = await Customer_Orders.create({
+        customer_id,
+        sale_details_id: _SaleDetail.id,
+        gross: total
+      })
       response.status(200).json({
         message: 'Successfully added Customer sales.',
         cust_ord,
@@ -99,8 +110,8 @@ class SaleController {
     }
   }
 
-  async show ({ response, params: { id }}) {
-    const sale = await Sales.query().where({sales_id:id})
+  async show ({ response, params: { id } }) {
+    const sale = await Sales.query().where({ sales_id: id })
 
     if (sale.length) {
       response.status(200).json({
@@ -115,15 +126,11 @@ class SaleController {
     }
   }
 
-  async edit () {
-  }
+  async edit () {}
 
-  async update () {
-  }
+  async update () {}
 
-  async destroy () {
-  }
-
+  async destroy () {}
 }
 
 module.exports = SaleController

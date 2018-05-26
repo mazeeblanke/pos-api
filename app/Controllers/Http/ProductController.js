@@ -1,6 +1,7 @@
 'use strict'
 
 const Product = use('App/Models/Product')
+const ProductsBranch = use('App/Models/ProductsBranch')
 
 class ProductController {
   async index ({ request, response }) {
@@ -48,31 +49,43 @@ class ProductController {
 
   async create () {}
 
-
   async store ({ request, response }) {
-    const {
-      name,
-      quantity,
-      unitprice,
-      costprice,
-      barcode,
-      status
-    } = request.post()
-    const product = await Product.create({
-      name,
-      quantity,
-      unitprice,
-      costprice,
-      barcode,
-      status
-    })
+    const { branches, branch_id, products } = request.post()
+    let payload
 
-    response.status(201).json({
+    if (products) {
+       payload = await Product.createMany(products)
+    }
+
+    if (!products) {
+      let product = await Product.create(
+        request.only([
+          'name',
+          'quantity',
+          'unitprice',
+          'costprice',
+          'barcode',
+          'reorder',
+          'store_id',
+          'status'
+        ])
+      )
+
+      if (branches && branches instanceof Array && branches.length) {
+        const _branches = await product.productBranches().createMany(branches)
+        product.branch = _branches.find(b => b.branch_id === branch_id) || {}
+      } else {
+        product.branch = {}
+      }
+
+      payload = product
+    }
+
+    response.status(200).json({
       message: 'Successfully added product',
-      data: product
+      data: payload
     })
   }
-
 
   async check ({ request, response }) {
     const { name, limit } = request.post()
