@@ -7,7 +7,8 @@ class AddPrintoutCurrencyReceiptinfoColumnsToBranchesSchema extends Schema {
     this.table('branches', (table) => {
       // alter table
       table.text('receiptinfo').nullable()
-      table.string('currency').notNullable()
+      table.jsonb
+('currency').notNullable()
       table.string('printout').notNullable()
     })
   }

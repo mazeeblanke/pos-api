@@ -4,12 +4,12 @@ const Model = use('Model')
 
 class Branch extends Model {
 
-  getCurrency (currency) {
-    if (! currency instanceof Object) {
-      return JSON.parse(currency)
-    }
-    return currency
-  }
+  // getCurrency (currency) {
+  //   if (typeof currency === "string") {
+  //     return JSON.parse(currency)
+  //   }
+  //   return currency
+  // }
 
   setPrintout (value) {
     if (value === undefined) {

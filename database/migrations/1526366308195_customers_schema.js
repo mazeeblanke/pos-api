@@ -14,9 +14,9 @@ class CustomersSchema extends Schema {
       table.string('marital_status')
       table.string('email')
       table.text('address')
-      table.string('city')
+      // table.string('city')
       table.string('country')
-      table.string('postalcode')
+      // table.string('postalcode')
       table.string('cardnumber')
     })
   }

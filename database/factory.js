@@ -28,8 +28,11 @@ Factory.blueprint('App/Models/Product', (faker, i, data) => {
 
 Factory.blueprint('App/Models/User', (faker, i, data) => {
   return {
-    username: faker.name(),
+    username: faker.name().split(' ')[0],
+    full_name: faker.name(),
     email: faker.email(),
+    access_level: 'clerk',
+    status: 'active',
     password: data.password || faker.string({ length: 8 }),
     store_id: data.store_id,
     branch_id: data.branch_id,
@@ -41,7 +44,7 @@ Factory.blueprint('App/Models/Store', (faker) => {
     name: faker.name(),
     email: faker.email(),
     phone: faker.phone(),
-    currency: {},
+    currency: {name: 'naira'},
     tax: null
   }
 })
@@ -55,7 +58,7 @@ Factory.blueprint('App/Models/Branch', (faker, i, data) => {
     receiptinfo: faker.sentence({ words: 5 }),
     threshold: faker.integer({ min: 20, max: 2000 }),
     discount: faker.integer({ min: 0, max: 100 }),
-    currency: {},
+    currency: { name: 'naira'},
     printout: 'receipt'
   }
 })

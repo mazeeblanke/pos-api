@@ -78,11 +78,13 @@ class SaleController {
       })
       .filter(p => p)
 
+
     for (let item of products) {
       const product_branch = await Branch_inventory.query()
         .where('branch_id', item.branch_id)
         .where('product_id', item.product_id)
         .first()
+
       product_branch.quantity =
         parseInt(product_branch.quantity) - parseInt(item.quantity)
 

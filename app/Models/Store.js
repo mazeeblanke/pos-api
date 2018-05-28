@@ -15,14 +15,18 @@ class Store extends Model {
     if (value === undefined || value === null) {
       return JSON.stringify([{ type: "Value Added Tax (VAT)", value: 10 }]);
     } else {
-      return value
+      return JSON.stringify(value)
     }
   }
 
   getTax (value) {
-    if (value !== undefined) {
+    console.log('in herre')
+    console.log(value)
+    // console.log(JSON.parse(value))
+    if (typeof value === "string") {
       return JSON.parse(value)
     }
+    return value
   }
 
   branches() {

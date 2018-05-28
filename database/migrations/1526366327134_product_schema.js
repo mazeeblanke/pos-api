@@ -7,7 +7,7 @@ class ProductSchema extends Schema {
     this.create('products', (table) => {
       table.increments()
       table.timestamps()
-      table.text('name').unique()
+      table.text('name')
       table.bigInteger('quantity')
       table.bigInteger('reorder')
       table.decimal('unitprice', 15, 2)
