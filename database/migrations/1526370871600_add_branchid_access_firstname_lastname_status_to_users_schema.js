@@ -7,8 +7,8 @@ class AddBranchidAccessFirstnameLastnameStatusToUsersSchema extends Schema {
     this.table('users', (table) => {
       // alter table
       table.string('full_name', 255).nullable();
-      table.enu('access_level', ['admin', 'clerk', 'superadmin']);
-      table.enu('status', ['active', 'inactive']);
+      table.enu('access_level', ['admin', 'clerk', 'superadmin']).notNullable();
+      table.enu('status', ['active', 'inactive']).notNullable();
       table
         .integer('branch_id', 255)
         .notNullable()

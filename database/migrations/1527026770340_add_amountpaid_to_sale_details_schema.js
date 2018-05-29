@@ -6,7 +6,7 @@ class AddAmountpaidToSaleDetailsSchema extends Schema {
   up() {
     this.table('sale_details', (table) => {
       // alter table
-      table.decimal('amount_paid', 15, 6)
+      table.decimal('amount_paid', 15, 2)
     })
   }
 

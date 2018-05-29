@@ -20,27 +20,14 @@ class Register {
       'branches.*.email': 'required|email',
       'branches.*.name': 'required',
       'branches.*.address': 'required',
-
-      'branches.*.currency.symbol': 'required',
       'branches.*.currency.name': 'required',
-      'branches.*.currency.symbol_native': 'required',
-      'branches.*.currency.decimal_digits': 'required',
-      'branches.*.currency.rounding': 'required',
-      'branches.*.currency.code': 'required',
-      'branches.*.currency.name_plural': 'required',
 
       'paymentPlan': 'required',
 
       //STORE
       'store.name': 'required',
       'store.email': 'required|email',
-      'store.currency.symbol': 'required',
-      'store.currency.name': 'required',
-      'store.currency.symbol_native': 'required',
-      'store.currency.decimal_digits': 'required',
-      'store.currency.rounding': 'required',
-      'store.currency.code': 'required',
-      'store.currency.name_plural': 'required',
+      'store.currency.name': 'required'
     }
   }
 

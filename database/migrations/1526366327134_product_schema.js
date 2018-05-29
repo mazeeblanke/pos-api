@@ -7,11 +7,11 @@ class ProductSchema extends Schema {
     this.create('products', (table) => {
       table.increments()
       table.timestamps()
-      table.text('name').unique()
-      table.integer('quantity')
-      table.integer('reorder')
-      table.decimal('unitprice', 15, 6)
-      table.decimal('costprice', 15, 6)
+      table.text('name')
+      table.bigInteger('quantity')
+      table.bigInteger('reorder')
+      table.decimal('unitprice', 15, 2)
+      table.decimal('costprice', 15, 2)
       table.text('barcode')
       table.string('status')
       table

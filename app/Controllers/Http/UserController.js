@@ -1,14 +1,43 @@
 'use strict'
 
 const User = use('App/Models/User')
+
+const filters = {
+  username: { type: 'raw' },
+  email: { type: 'raw' },
+  full_name: { type: 'raw' },
+  status: { type: 'plain' },
+  access_level: { type: 'plain' },
+  branch_id: { type: 'plain' },
+  store_id: { type: 'plain' }
+}
+
 class UserController {
-  async index({ response }) {
-    // const users = await User.all()
+  async index ({ response, request }) {
     const reqData = request.all()
-    const limit = reqData.limit || 10
-    const name = reqData.name || ''
+    const limit = reqData.limit || 20
     const page = reqData.page || 1
-    const users = await User.query().where('name','like',`%${name}%`).paginate(page, limit)
+    const with_branch = !!(reqData.branch || 1)
+    let builder = User.query()
+
+    Object.keys(filters).forEach(filter => {
+      const FILTER_REQ_VALUE = reqData[filter]
+      if (FILTER_REQ_VALUE) {
+        if (filters[filter].type === 'raw') {
+          builder = builder.whereRaw(
+            `LOWER(${filter}) LIKE LOWER('%${FILTER_REQ_VALUE}%')`
+          )
+        } else {
+          builder = builder.where(filter, FILTER_REQ_VALUE)
+        }
+      }
+    })
+
+    if (with_branch) {
+      builder.with('branch')
+    }
+
+    const users = await builder.orderBy('id', 'desc').paginate(page, limit)
 
     response.status(200).json({
       message: 'All Users',
@@ -16,13 +45,12 @@ class UserController {
     })
   }
 
-  async show({ response, params: { id } }) {
-
-    const user = await User.find(id)
+  async show ({ response, params: { id } }) {
+    const user = await User.query().where('id', id).with('branch').first()
 
     if (user) {
       response.status(200).json({
-        message: 'Single User',
+        message: 'Successfully loaded user!!',
         data: user
       })
     } else {
@@ -33,11 +61,22 @@ class UserController {
     }
   }
 
-  async store({ request, response}) {
+  async store ({ request, response, auth }) {
+    const loggedinUser = await auth.getUser()
+    const user = await User.create({
+      ...request.only([
+        'email',
+        'password',
+        'full_name',
+        'access_level',
+        'status',
+        'username',
+        'branch_id'
+      ]),
+      store_id: loggedinUser.store_id
+    })
 
-
-    const {email, password, first_name, last_name, access_level, status, username,branch_id} = request.post()
-    const user = await User.create({username, email, password, first_name, last_name, access_level, status, branch_id})
+    await user.load('branch')
 
     response.status(201).json({
       message: 'Successfully created a new user.',
@@ -45,25 +84,65 @@ class UserController {
     })
   }
 
-  async update({ request, response, params: { id } }) {
+  async update ({ request, response, params: { id } }) {
     const user = await User.find(id)
 
-    if(user) {
-      const {email, password, first_name, last_name, access_level, status, username} = request.post()
+    if (user) {
+      const {
+        email = user.email,
+        password = user.password,
+        full_name = user.full_name,
+        access_level = user.access_level,
+        status = user.status,
+        username = user.username,
+        branch_id,
+      } = request.post()
 
-      user.email = email
-      user.password = password
-      user.first_name = first_name
-      user.last_name = last_name
-      user.access_level = access_level
-      user.status = status
-      user.username = username
+      let payload = {
+        email,
+        full_name,
+        access_level,
+        status,
+        username,
+        branch_id
+      }
+
+      if (password) {
+        payload = {
+          ...payload,
+          password,
+        }
+      }
+
+      user.merge(payload)
 
       await user.save()
+      await user.load('branch')
 
       response.status(200).json({
-        message: 'Successfully update user,',
+        message: 'Successfully update user',
         data: user
+      })
+
+    } else {
+
+      response.status(404).json({
+        message: 'User not found',
+        id
+      })
+
+    }
+  }
+
+  async delete ({ response, param: { id } }) {
+    const user = await User.find(id)
+
+    if (user) {
+      await user.delete()
+
+      response.status(200).json({
+        message: 'Successfully delete user,',
+        id
       })
     } else {
       response.status(404).json({
@@ -72,24 +151,6 @@ class UserController {
       })
     }
   }
-
-  // async delete({ response, param: { id } }) {
-  //   const user = await User.find(id)
-
-  //   if(user) {
-  //     await user.delete()
-
-  //     response.status(200).json({
-  //       message: 'Successfully delete user,',
-  //       id
-  //     })
-  //   } else {
-  //     response.status(404).json({
-  //       message: 'User not found',
-  //       id
-  //     })
-  //   }
-  // }
 }
 
 module.exports = UserController

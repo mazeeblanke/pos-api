@@ -22,7 +22,7 @@ Route.get('/', ({ request }) => {
 //user routes
 Route.get('/users', 'UserController.index')
 Route.get('/user/:id', 'UserController.show')
-Route.post('/user', 'UserController.store')
+Route.post('/users', 'UserController.store')
 Route.patch('/user/:id', 'UserController.update')
 // Route.delete('/user/:id', 'UserController.delete')
 
@@ -38,7 +38,7 @@ Route.post('/settings','SettingController.update').middleware(['authenticateToke
 
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
-Route.post('/sales','SaleController.store').validator('Sales').middleware(['authenticateToken'])
+Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
 Route.get('/sale/:id','SaleController.show')
 
 //Sales history
@@ -50,9 +50,9 @@ Route.post('/refunds', 'RefundController.store')
 
 //products
 Route.get('/products','ProductController.index').middleware(['authenticateToken'])
-Route.get('/product/:id', 'ProductController.show')
-Route.post('/product', 'ProductController.check')
-Route.post('/products', 'ProductController.store').validator('Products')
+Route.get('/product/:id', 'ProductController.show').middleware(['authenticateToken'])
+Route.post('/product', 'ProductController.check').middleware(['authenticateToken'])
+Route.post('/products', 'ProductController.store').validator('Products').middleware(['authenticateToken'])
 
 
 //Product Inquiry
@@ -60,7 +60,7 @@ Route.get('/productinquiry', 'ProductInquiryController.index').middleware(['auth
 Route.post('/productinquiry', 'ProductInquiryController.store').middleware(['authenticateToken'])
 
 //branch
-Route.get('/branch', 'BranchController.index')
+Route.get('/branches', 'BranchController.index')
 
 // Customers
 Route.get('/customers', 'CustomerController.index')

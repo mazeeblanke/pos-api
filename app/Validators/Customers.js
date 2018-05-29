@@ -11,10 +11,10 @@ class Customers {
       'marital_status': 'required',
       'email': 'required|email',
       'address': 'required',
-      'city': 'required',
+      // 'city': 'required',
       'country': 'required',
-      'postalcode': 'required',
-      'cardnumber': 'required',
+      // 'postalcode': 'required',
+      // 'cardnumber': 'required',
       'store_id': 'required'
     }
   }

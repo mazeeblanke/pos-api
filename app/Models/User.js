@@ -30,6 +30,17 @@ class User extends Model {
     return this.hasMany("App/Models/Token");
   }
 
+  static get hidden () {
+    return ['password']
+  }
+
+  setStatus (status) {
+    if (status) {
+      return 'active'
+    } 
+    return status
+  }
+
   branch() {
     return this.belongsTo("App/Models/Branch", "branch_id");
   }

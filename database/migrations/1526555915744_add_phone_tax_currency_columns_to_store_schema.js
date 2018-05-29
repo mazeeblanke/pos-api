@@ -6,11 +6,9 @@ class AddPhoneTaxCurrencyColumnsToStoreSchema extends Schema {
   up () {
     this.table('stores', (table) => {
       // alter table
-      const defaultTax = JSON.stringify([{ type: "Value Added Tax (VAT)", value: 10 }]);
       table
         .jsonb("tax")
         .notNullable()
-        .defaultTo(defaultTax);
       table.string('phone').nullable()
       table.jsonb('currency').notNullable()
     })

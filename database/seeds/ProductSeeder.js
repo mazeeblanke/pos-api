@@ -15,8 +15,8 @@ const Database = use('Database')
 
 class ProductSeeder {
   async run () {
-    await Factory.model('App/Models/Store').createMany(50)
     await Factory.model('App/Models/Product').createMany(50, { store_id: 1 })
+    await Factory.model('App/Models/Store').createMany(50)
     await Factory.model('App/Models/Branch').createMany(50, { store_id: 1 })
     await Database.table('product_branches').insert([
       { quantity: 100, product_id: 1, branch_id: 1}, 
@@ -60,6 +60,7 @@ class ProductSeeder {
       { quantity: 100, product_id: 40, branch_id: 1}, 
       { quantity: 100, product_id: 41, branch_id: 1}, 
     ])
+    await Factory.model('App/Models/User').createMany(60, { store_id: 1, branch_id: 1 })
   }
 }
 

@@ -33,11 +33,11 @@ class SalesSchema extends Schema {
       table.integer('quantity')
       table.enu('payment_type', ['cash', 'card']).defaultTo('cash')
       table.bigInteger('sales_id')
-      table.decimal('unit_price', 15, 6)
-      table.decimal('total', 15, 6)
+      table.decimal('unit_price', 15, 2)
+      table.decimal('total', 15, 2)
       table.datetime('salestime')
-      table.decimal('discount', 15, 6)
-      table.decimal('tax', 15, 6)
+      table.decimal('discount', 15, 2)
+      table.decimal('tax', 15, 2)
     })
   }
 

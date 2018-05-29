@@ -19,24 +19,23 @@ class RegisterController {
     let trial_starts_at = moment().format()
     let license_key
 
-    var { name, email, currency } = request.post().store;
+    var { name, email, currency, tax } = request.post().store;
 
-    let store = await Store.create({name, email, currency })
-
+    let store = await Store.create({ name, email, currency, tax })
+    
     const store_id = store.id
 
     const branches = request.post().branches
     const new_branches = []
     for (let branch of branches) {
-      let { email, name, address, currency } = branch
+      let { email, name, address, currency, printout } = branch
       if (email && name && address) {
-        const branch = await Branch.create({email, name, address, store_id, currency})
+        const branch = await Branch.create({email, name, address, store_id, currency, printout})
         new_branches.push(branch)
       }
     }
 
     let branch_id = new_branches[0].id
-
 
     const user_data = request.post().user
     var {email, password, full_name, access_level, status, username} = user_data

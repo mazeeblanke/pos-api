@@ -98,6 +98,31 @@ test('An admin can register a company with branches with the right credentials',
   })
 })
 
+
+
+test('A user can be updated', async({ assert, client }) => {
+  const store = await Factory.model('App/Models/Store').create()
+  const branch = await Factory.model('App/Models/Branch').create({ store_id: store.id })
+  const user = await Factory.model('App/Models/User').create({ store_id: store.id, branch_id: branch.id })
+
+  const response = await client
+  .patch(`/user/${user.id}`)
+  .send({
+    username: 'mazinoukah',
+    email: 'jasj@yahoo.com'
+  })
+  .end()
+
+  response.assertStatus(200)
+  response.assertJSONSubset({
+    message: 'Successfully update user',
+    data: {
+      username: 'mazinoukah',
+      email: 'jasj@yahoo.com'
+    }
+  })
+})
+
 // test('An admin cannot register a company with branches with the wrong/missing credentials', async ({
 //   assert,
 //   client

@@ -33,7 +33,7 @@ class SettingController {
   async update({ request, response, auth}) {
     let loggedInUser = await auth.getUser()
     const { branch, store } = request.post()
-    const _branch = await loggedInUser.branch().first()
+    const _branch = await Branch.find(branch.id)
     const _store = await loggedInUser.store().first()
 
     _branch.merge(branch)
@@ -44,9 +44,9 @@ class SettingController {
 
     response.status(201).json({
       message: "Settings Added",
-      payload: {
-        _store,
-        _branch
+      data: {
+        store: _store,
+        branch: _branch
       }
     })
 
