@@ -11,12 +11,12 @@ class BranchController {
     const limit = reqData.limit || 10
     const name = reqData.namae || ''
     const page = reqData.page || 1
-    const branchs = await Branch.query().where('name','like',`%${name}%`).paginate(page, limit)
+    const branches = await Branch.query().where('name','like',`%${name}%`).paginate(page, limit)
     console.log(reqData)
 
     response.status(200).json({
       message: 'All Branch',
-      branchs
+      branches
     })
   }
 
@@ -26,7 +26,7 @@ class BranchController {
   async store () {
   }
 
-  async show () {
+  async show ({  }) {
   }
 
   async edit () {

@@ -3,7 +3,12 @@
 const User = use('App/Models/User')
 class UserController {
   async index({ response }) {
-    const users = await User.all()
+    // const users = await User.all()
+    const reqData = request.all()
+    const limit = reqData.limit || 10
+    const name = reqData.name || ''
+    const page = reqData.page || 1
+    const users = await User.query().where('name','like',`%${name}%`).paginate(page, limit)
 
     response.status(200).json({
       message: 'All Users',
@@ -26,8 +31,6 @@ class UserController {
         id
       })
     }
-
-
   }
 
   async store({ request, response}) {
@@ -70,23 +73,23 @@ class UserController {
     }
   }
 
-  async delete({ response, param: { id } }) {
-    const user = await User.find(id)
+  // async delete({ response, param: { id } }) {
+  //   const user = await User.find(id)
 
-    if(user) {
-      await user.delete()
+  //   if(user) {
+  //     await user.delete()
 
-      response.status(200).json({
-        message: 'Successfully delete user,',
-        id
-      })
-    } else {
-      response.status(404).json({
-        message: 'User not found',
-        id
-      })
-    }
-  }
+  //     response.status(200).json({
+  //       message: 'Successfully delete user,',
+  //       id
+  //     })
+  //   } else {
+  //     response.status(404).json({
+  //       message: 'User not found',
+  //       id
+  //     })
+  //   }
+  // }
 }
 
 module.exports = UserController

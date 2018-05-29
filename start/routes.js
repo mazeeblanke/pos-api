@@ -16,7 +16,7 @@
 const Route = use('Route')
 
 Route.get('/', ({ request }) => {
-  return { greeting: 'Hello world in JSON' }
+  return { greeting: 'Multi-Store POS JSON API' }
 })
 
 //user routes
@@ -24,7 +24,7 @@ Route.get('/users', 'UserController.index')
 Route.get('/user/:id', 'UserController.show')
 Route.post('/user', 'UserController.store')
 Route.patch('/user/:id', 'UserController.update')
-Route.delete('/user/:id', 'UserController.delete')
+// Route.delete('/user/:id', 'UserController.delete')
 
 //user registeration
 Route.post('/register','RegisterController.store').validator('RegisterCompany')
@@ -44,12 +44,20 @@ Route.get('/sale/:id','SaleController.show')
 //Sales history
 Route.get('/sales-history','SaleHistoryController.index').middleware(['authenticateToken'])
 
+//Refunds
+Route.get('/refunds', 'RefundController.index')
+Route.post('/refunds', 'RefundController.store')
 
 //products
 Route.get('/products','ProductController.index').middleware(['authenticateToken'])
 Route.get('/product/:id', 'ProductController.show')
 Route.post('/product', 'ProductController.check')
 Route.post('/products', 'ProductController.store').validator('Products')
+
+
+//Product Inquiry
+Route.get('/productinquiry', 'ProductInquiryController.index').middleware(['authenticateToken'])
+Route.post('/productinquiry', 'ProductInquiryController.store').middleware(['authenticateToken'])
 
 //branch
 Route.get('/branch', 'BranchController.index')

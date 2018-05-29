@@ -2,6 +2,7 @@
 
 const Product = use('App/Models/Product')
 
+
 class ProductController {
   async index ({ request, response }) {
     const reqData = request.all()
@@ -112,6 +113,7 @@ class ProductController {
       })
     }
   }
+
 
   async edit () {}
 

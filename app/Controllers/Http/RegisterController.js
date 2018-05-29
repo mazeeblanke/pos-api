@@ -43,12 +43,12 @@ class RegisterController {
     let user = await User.create({username, email, password, full_name, access_level, status, branch_id, store_id})
 
 
-    await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
-      message
-        .to(user.email)
-        .from('admin_pos@axximuth.com')
-        .subject('Please confirm your email')
-    })
+    // await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
+    //   message
+    //     .to(user.email)
+    //     .from('admin_pos@axximuth.com')
+    //     .subject('Please confirm your email')
+    // })
 
     await user.load('branch')
 
@@ -75,8 +75,8 @@ class RegisterController {
     response.status(200).json({
       message: 'Successfully created.',
       data: {
-        store: store, 
-        branch: new_branches, 
+        store: store,
+        branch: new_branches,
         user: {
           ...user.toJSON(),
           gravatar: gravatar.imageUrl({
