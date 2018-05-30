@@ -53,6 +53,9 @@ Route.post('/products', 'ProductController.store').validator('Products').middlew
 
 //branch
 Route.get('/branches', 'BranchController.index')
+Route.get('/branch/:id', 'BranchController.show')
+Route.patch('/branch/:id', 'BranchController.update')
+Route.post('/branches', 'BranchController.store')
 
 // Customers
 Route.get('/customers', 'CustomerController.index')
