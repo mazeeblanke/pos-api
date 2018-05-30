@@ -6,8 +6,8 @@ class AddThresholdAndDiscountColumnsToBranchesSchema extends Schema {
   up () {
     this.table('branches', (table) => {
       // alter table
-      table.integer('threshold').defaultTo(0)
-      table.integer('discount').defaultTo(0)
+      table.integer('threshold')
+      table.integer('discount')
     })
   }
 

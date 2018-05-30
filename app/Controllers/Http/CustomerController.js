@@ -1,13 +1,52 @@
 'use strict'
 
+const filters = {
+  full_name: { type: 'raw' },
+  email: { type: 'raw' },
+  city: { type: 'raw' },
+  country: { type: 'raw' },
+  phone: { type: 'raw' },
+  address: { type: 'raw' },
+  postalcode: { type: 'raw' },
+  cardnumber: { type: 'raw' },
+  status: { type: 'plain' },
+  access_level: { type: 'plain' },
+  gender: { type: 'plain' },
+  marital_status: { type: 'plain' },
+  store_id: { type: 'plain' }
+}
+
 const Customer = use('App/Models/Customer')
 class CustomerController {
-  async index ({ response }) {
-    const customer = await Customer.all()
+  async index ({ response, request }) {
+    const reqData = request.all()
+    const limit = reqData.limit || 20
+    const page = reqData.page || 1
+    const with_store = !!(reqData.with_store || 1)
+    let builder = Customer.query()
+
+    Object.keys(filters).forEach(filter => {
+      const FILTER_REQ_VALUE = reqData[filter]
+      if (FILTER_REQ_VALUE) {
+        if (filters[filter].type === 'raw') {
+          builder = builder.whereRaw(
+            `LOWER(${filter}) LIKE LOWER('%${FILTER_REQ_VALUE}%')`
+          )
+        } else {
+          builder = builder.where(filter, FILTER_REQ_VALUE)
+        }
+      }
+    })
+
+    if (with_store) {
+      builder.with('store')
+    }
+
+    const customers = await builder.orderBy('id', 'desc').paginate(page, limit)
 
     response.status(200).json({
       message: 'All Cutomers.',
-      data: customer
+      data: customers
     })
   }
 
@@ -16,14 +55,15 @@ class CustomerController {
   async store ({ response, request }) {
     const customer = await Customer.create(
       request.only([
-        'first_name',
-        'last_name',
+        'full_name',
         'phone',
         'gender',
         'store_id',
         'marital_status',
         'email',
+        'title',
         'address',
+        'town',
         'city',
         'country',
         'postalcode',
@@ -68,6 +108,8 @@ class CustomerController {
           'gender',
           'marital_status',
           'email',
+          'title',
+          'town',
           'store_id',
           'address',
           'city',

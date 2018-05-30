@@ -62,3 +62,31 @@ Factory.blueprint('App/Models/Branch', (faker, i, data) => {
     printout: 'receipt'
   }
 })
+
+Factory.blueprint('App/Models/Customer', (faker, i, data) => {
+  return {
+    full_name: faker.name(),
+    // last_name: faker.last(),
+    phone: faker.phone(),
+    gender: faker.gender(),
+    marital_status: 'single',
+    email: faker.email(),
+    address: faker.address(),
+    title: faker.prefix(),
+    country: faker.country({ full: true }),
+    town: faker.city(),
+    store_id: data.store_id,
+    date_of_birth: faker.date(),
+    cardnumber: faker.fbid(),
+    confirmation: faker.hash()
+  }
+})
+
+Factory.blueprint('App/Models/Branch', (faker, i, data) => {
+  return {
+    name: faker.name(),
+    address: faker.address(),
+    store_id: data.store_id || 1,
+    currency: {}
+  }
+})

@@ -20,9 +20,6 @@ class Store extends Model {
   }
 
   getTax (value) {
-    console.log('in herre')
-    console.log(value)
-    // console.log(JSON.parse(value))
     if (typeof value === "string") {
       return JSON.parse(value)
     }

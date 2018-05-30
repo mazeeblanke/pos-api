@@ -4,24 +4,26 @@ const Model = use('Model')
 
 class Branch extends Model {
 
-  // getCurrency (currency) {
-  //   if (typeof currency === "string") {
-  //     return JSON.parse(currency)
-  //   }
-  //   return currency
-  // }
-
   setPrintout (value) {
-    if (value === undefined) {
-      return 'receipt'
-    } else {
-      return value
-    }
+    return value || 'receipt'
+  }
+
+  setThreshold (threshold) {
+    return threshold || 0
+  }
+
+  setDiscount (discount) {
+    return discount || 0
+  }
+
+  setReceiptinfo (receiptinfo) {
+    return receiptinfo || ''
   }
 
   store() {
     return this.belongsTo('App/Models/Store', 'store_id')
   }
+
 }
 
 module.exports = Branch

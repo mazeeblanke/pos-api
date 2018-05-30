@@ -15,23 +15,93 @@ class BranchController {
     const branches = await Branch.query()
       .where('store_id', store_id)
       .whereRaw(`lower("name") like lower('%${name}%')`)
+      .orderBy('id', 'desc')
       .paginate(page, limit)
 
     response.status(200).json({
-      message: 'All Branch',
-      branches
+      message: 'successfully loaded branches !!',
+      data: branches
     })
   }
 
   async create () {}
 
-  async store () {}
+  async store ({ request, response, auth }) {
+    const loggedInUser = await auth.getUser()
+    const store_id = loggedInUser.store_id
+    const branch = await Branch.create({
+      ...request.only([
+        'name',
+        'email',
+        'address',
+        'currency',
+        'receiptinfo',
+        'printout',
+        'discount',
+        'threshold'
+      ]),
+      store_id
+    })
 
-  async show () {}
+    response.status(200).json({
+      message: 'Successfully created branch !!',
+      data: branch
+    })
+  }
+
+  async show ({ params: { id }, response }) {
+    const branch = await Branch.find(id)
+    if (branch) {
+      response.status(200).json({
+        message: 'Successfully loaded branch !!',
+        data: branch
+      })
+    } else {
+      response.status(404).json({
+        message: 'branch not found!',
+        id
+      })
+    }
+  }
 
   async edit () {}
 
-  async update () {}
+  async update ({ params: { id }, response, request }) {
+    let branch = await Branch.find(id)
+    let updated
+
+    if (branch) {
+      branch.merge(
+        request.only([
+          'name',
+          'email',
+          'address',
+          'currency',
+          'receiptinfo',
+          'printout',
+          'discount',
+          'threshold'
+        ])
+      )
+
+      if (updated = await branch.save()) {
+        response.status(200).json({
+          message: 'Successfully updated branch details',
+          data: branch
+        })
+      } else {
+        response.status(404).json({
+          message: 'Unable to update branch details',
+          data: branch
+        })
+      }
+    } else {
+      response.status(404).json({
+        message: 'Branch not found',
+        id
+      })
+    }
+  }
 
   async destroy () {}
 }

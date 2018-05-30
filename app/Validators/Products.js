@@ -9,6 +9,7 @@ class Products {
         'products.*.name' : 'required|string',
         'products.*.quantity' : 'required|number',
         'products.*.unitprice' : 'required|number',
+        'products.*.reorder' : 'required|number',
         'products.*.costprice' : 'required|number',
         'products.*.barcode' : 'required',
         'products.*.status': 'required|string'
@@ -18,6 +19,7 @@ class Products {
       // validation rules
       'name' : 'required',
       'quantity' : 'required',
+      'reorder' : 'required',
       'unitprice' : 'required',
       'costprice' : 'required',
       'barcode' : 'required',

@@ -4,8 +4,7 @@ class Customers {
   get rules() {
     return {
       // validation rules
-      'first_name': 'required',
-      'last_name': 'required',
+      'full_name': 'required',
       'phone': 'required',
       'gender': 'required',
       'marital_status': 'required',
