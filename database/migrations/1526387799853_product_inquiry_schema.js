@@ -13,6 +13,8 @@ class ProductInquirySchema extends Schema {
       table.text('inquiry_note')
       table.datetime('inquiry_date')
       table.datetime('expected_date')
+      table.integer('branch')
+      table.integer('store')
     })
   }
 

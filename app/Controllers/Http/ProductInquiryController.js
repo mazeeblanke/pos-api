@@ -26,7 +26,9 @@ class ProductInquiryController {
       product_name,
       inquiry_note,
       inquiry_date,
-      expected_date
+      expected_date,
+      branch_id,
+      store_id
     } = request.post()
 
     const productInq = await Product_inquiry.create({
@@ -35,7 +37,9 @@ class ProductInquiryController {
       product_name,
       inquiry_note,
       inquiry_date,
-      expected_date
+      expected_date,
+      branch_id,
+      store_id
     })
 
     response.status(201).json({
