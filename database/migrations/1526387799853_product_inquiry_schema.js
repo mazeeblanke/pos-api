@@ -6,15 +6,15 @@ class ProductInquirySchema extends Schema {
   up() {
     this.create('product_inquiries', (table) => {
       table.increments()
-      table.timestamps()
+      table.timestamps('')
       table.integer('customer_id')
       table.integer('product_id')
       table.text('product_name')
       table.text('inquiry_note')
       table.datetime('inquiry_date')
       table.datetime('expected_date')
-      table.integer('branch')
-      table.integer('store')
+      table.integer('branch_id')
+      table.integer('store_id')
     })
   }
 

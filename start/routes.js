@@ -56,8 +56,8 @@ Route.post('/products', 'ProductController.store').validator('Products').middlew
 
 
 //Product Inquiry
-Route.get('/productinquiry', 'ProductInquiryController.index').middleware(['authenticateToken'])
-Route.post('/productinquiry', 'ProductInquiryController.store').middleware(['authenticateToken'])
+Route.get('/productinquiry', 'ProductInquiryController.index')
+Route.post('/productinquiry', 'ProductInquiryController.store')
 
 //branch
 Route.get('/branches', 'BranchController.index')
