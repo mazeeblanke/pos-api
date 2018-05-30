@@ -22,7 +22,7 @@ class RegisterController {
     var { name, email, currency, tax } = request.post().store;
 
     let store = await Store.create({ name, email, currency, tax })
-    
+
     const store_id = store.id
 
     const branches = request.post().branches
@@ -42,12 +42,12 @@ class RegisterController {
     let user = await User.create({username, email, password, full_name, access_level, status, branch_id, store_id})
 
 
-    // await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
-    //   message
-    //     .to(user.email)
-    //     .from('admin_pos@axximuth.com')
-    //     .subject('Please confirm your email')
-    // })
+    await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
+      message
+        .to(user.email)
+        .from('admin_pos@axximuth.com')
+        .subject('Please confirm your email')
+    })
 
     await user.load('branch')
 

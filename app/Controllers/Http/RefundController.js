@@ -59,11 +59,11 @@ class RefundController {
       .where('branches.id', branch_id)
       .first()
 
-      console.log('branch: ', branch)
+
 
         // _SaleDetail.total
         // _SaleDetail.amount_paid
-        _SaleDetail.discount = sales_item.sub_total / (branch.threshold * branch.discount)
+        _SaleDetail.discount = (sales_item.sub_total / (branch.threshold * branch.discount)).toFixed(2)
         _SaleDetail.total = Math.max((sales_item.sub_total - _SaleDetail.discount) +  _SaleDetail.tax, 0)
 
 
