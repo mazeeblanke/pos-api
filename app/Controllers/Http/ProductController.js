@@ -3,6 +3,7 @@
 const Product = use('App/Models/Product')
 const ProductsBranch = use('App/Models/ProductsBranch')
 
+
 class ProductController {
   async index ({ request, response }) {
     const reqData = request.all()
@@ -125,6 +126,7 @@ class ProductController {
       })
     }
   }
+
 
   async edit () {}
 
