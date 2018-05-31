@@ -21,6 +21,7 @@ class ProductsBranchesSchema extends Schema {
         .inTable('branches')
         .onDelete('cascade')
         .onUpdate('cascade');
+      table.integer('store_id').references('stores.id')
       table.timestamps()
     })
   }

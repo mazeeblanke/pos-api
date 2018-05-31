@@ -25,7 +25,7 @@ class RegisterController {
     const store_id = store.id
 
     const branches = request.post().branches
-    
+
     const new_branches = []
     for (let branch of branches) {
       let {
@@ -79,11 +79,7 @@ class RegisterController {
       store_id
     })
 
-<<<<<<< HEAD
-    await Mail.send('auth.emails.confirm_email', user.toJSON(), (message) => {
-=======
     await Mail.send('auth.emails.confirm_email', user.toJSON(), message => {
->>>>>>> f9f8ad368c04821fbf54a22eddb3ee1496b3bc3a
       message
         .to(user.email)
         .from('admin_pos@axximuth.com')
