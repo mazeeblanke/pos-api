@@ -5,19 +5,23 @@ const Product_transfer = use('App/Models/ProductTransfer')
 
 class ProductTransferController {
   async index({ request, response }) {
-    const reqData = request.all()
-    const limit = reqData.limit || 20
-    const store_id = reqData.store_id || 1
-    const branch_id = reqData.branch_id || 1
-    const page = reqData.page || 1
+    // const reqData = request.all()
+    // const limit = reqData.limit || 20
+    // const store_id = reqData.store_id || 1
+    // const from_branch_id = reqData.from_branch_id || 1
+    // const page = reqData.page || 1
+    // const to_branch_id = reqData.to_branch_id || 1
+    // const product_id = reqData.product_id || 1
 
 
-    const prd_trans = await Product_transfer.query()
-    .where('store_id', store_id)
-    .where('from_branch_id', from_branch_id)
-    .where('product_id', product_id)
-    .paginate(page, limit)
+    // const prd_trans = await Product_transfer.query()
+    // .where('store_id', store_id)
+    // .where('from_branch_id', from_branch_id)
+    // .where('to_branch_id', to_branch_id)
+    // .where('product_id', product_id)
+    // .paginate(page, limit)
 
+    const prd_trans = await Product_transfer.all()
     response.status(200).json({
       message: 'product transfer !!',
       data: prd_trans
