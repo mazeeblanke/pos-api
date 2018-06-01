@@ -79,12 +79,14 @@ class RegisterController {
       store_id
     })
 
-    await Mail.send('auth.emails.confirm_email', user.toJSON(), message => {
-      message
-        .to(user.email)
-        .from('admin_pos@axximuth.com')
-        .subject('Please confirm your email')
-    })
+    // await Mail.send('auth.emails.confirm_email', user.toJSON(), message => {
+    //   message
+    //     .to(user.email)
+    //     .from('admin_pos@axximuth.com')
+    //     .subject('Please confirm your email')
+    // })
+
+    Event.fire('new::user', user)
 
     await user.load('branch')
 

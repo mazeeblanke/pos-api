@@ -20,7 +20,6 @@ class RefundController {
     const limit = reqData.limit || 10
     const page = reqData.page || 1
     const refunds = await Refund.query().paginate(page, limit)
-    console.log(refunds)
 
     response.status(200).json({
       message: 'All Refunds',
@@ -87,7 +86,7 @@ class RefundController {
       .first()
 
     const sub_total = calcSubTotal(Sales)
-    
+
     const discountInPercent = calculateDiscount(
       sub_total,
       _saleDetail.threshold,
@@ -98,7 +97,10 @@ class RefundController {
 
     const taxInCash = calculatePercentInCash(_saleDetail.tax, sub_total)
 
-    _saleDetail.total = Math.max(sumCash([sub_total, -discountInCash, taxInCash]), 0)
+    _saleDetail.total = Math.max(
+      sumCash([sub_total, -discountInCash, taxInCash]),
+      0
+    )
 
     await _saleDetail.save(trx)
 

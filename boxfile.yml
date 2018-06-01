@@ -1,0 +1,12 @@
+run.config:
+  engine: nodejs
+  extra_packages:
+    - nginx
+
+web.main:
+  start:
+    nginx: nginx -c /app/etc/nginx.conf
+    adonis: npm start
+
+data.db:
+  image: nanobox/postgresql:9.6
