@@ -55,10 +55,13 @@ Route.get('/product/:id', 'ProductController.show').middleware(['authenticateTok
 Route.post('/product', 'ProductController.check').middleware(['authenticateToken'])
 Route.post('/products', 'ProductController.store').validator('Products').middleware(['authenticateToken'])
 
-
 //Product Inquiry
 Route.get('/productinquiry', 'ProductInquiryController.index')
 Route.post('/productinquiry', 'ProductInquiryController.store')
+
+//product Transfer
+Route.get('/producttransfer', 'ProductTransferController.index')
+Route.post('/producttransfer', 'ProductTransferController.store')
 
 //branch
 Route.get('/branches', 'BranchController.index')

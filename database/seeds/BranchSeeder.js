@@ -14,7 +14,7 @@ const Factory = use('Factory')
 
 class BranchSeeder {
   async run () {
-    await Factory.model('App/Models/Branch').createMany(80, { store_id: 2 })
+    // await Factory.model('App/Models/Branch').createMany(80, { store_id: 2 })
   }
 }
 

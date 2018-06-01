@@ -25,7 +25,7 @@ class RegisterController {
     const store_id = store.id
 
     const branches = request.post().branches
-    
+
     const new_branches = []
     for (let branch of branches) {
       let {
