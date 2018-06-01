@@ -87,13 +87,13 @@ class RefundController {
 
     const sub_total = calcSubTotal(Sales)
 
-    const discountInPercent = calculateDiscount(
+    _saleDetail.discount = calculateDiscount(
       sub_total,
       _saleDetail.threshold,
       _saleDetail.discount_per_threshold
     )
 
-    const discountInCash = calculatePercentInCash(discountInPercent, sub_total)
+    const discountInCash = calculatePercentInCash(_saleDetail.discount, sub_total)
 
     const taxInCash = calculatePercentInCash(_saleDetail.tax, sub_total)
 
