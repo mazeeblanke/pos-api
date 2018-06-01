@@ -7,7 +7,7 @@ class RefundSchema extends Schema {
     this.create('refund', (table) => {
       table.increments()
       table.timestamps()
-      table.bigInteger('sales_id')
+      table.integer('sales_id').references('sales.id')
       table.integer('sale_details_id').references('sale_details.id')
       table.integer('product_id').references('products.id')
       table.integer('store_id').references('stores.id')

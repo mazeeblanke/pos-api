@@ -60,9 +60,6 @@ class RefundController {
       .first()
 
 
-
-        // _SaleDetail.total
-        // _SaleDetail.amount_paid
         _SaleDetail.discount = (sales_item.sub_total / (branch.threshold * branch.discount)).toFixed(2)
         _SaleDetail.total = Math.max((sales_item.sub_total - _SaleDetail.discount) +  _SaleDetail.tax, 0)
 
@@ -70,7 +67,7 @@ class RefundController {
     // console.log("_SaleDetail: ", _SaleDetail)
 
       const refund = await Refund.create({
-        sales_id: sales_item.sales_id,
+        sales_id: sales_item.id,
         sale_details_id: sales_item.sale_details_id,
         product_id: sales_item.product_id,
         store_id: sales_item.store_id,
