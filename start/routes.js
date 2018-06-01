@@ -22,7 +22,7 @@ Route.get('/', ({ request }) => {
 //user routes
 Route.get('/users', 'UserController.index')
 Route.get('/user/:id', 'UserController.show')
-Route.post('/users', 'UserController.store')
+Route.post('/users', 'UserController.store').validator('StoreUser')
 Route.patch('/user/:id', 'UserController.update')
 // Route.delete('/user/:id', 'UserController.delete')
 
@@ -43,6 +43,7 @@ Route.get('/sale/:id','SaleController.show')
 
 //Sales history
 Route.get('/sales-history','SaleHistoryController.index').middleware(['authenticateToken'])
+Route.get('/sales-history/:id','SaleHistoryController.show').middleware(['authenticateToken'])
 
 //Refunds
 Route.get('/refunds', 'RefundController.index')
@@ -63,7 +64,7 @@ Route.post('/productinquiry', 'ProductInquiryController.store')
 Route.get('/branches', 'BranchController.index')
 Route.get('/branch/:id', 'BranchController.show')
 Route.patch('/branch/:id', 'BranchController.update')
-Route.post('/branches', 'BranchController.store')
+Route.post('/branches', 'BranchController.store').validator('Branches')
 
 // Customers
 Route.get('/customers', 'CustomerController.index')

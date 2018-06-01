@@ -63,24 +63,41 @@ class UserController {
 
   async store ({ request, response, auth }) {
     const loggedinUser = await auth.getUser()
-    const user = await User.create({
-      ...request.only([
-        'email',
-        'password',
-        'full_name',
-        'access_level',
-        'status',
-        'username',
-        'branch_id'
-      ]),
-      store_id: loggedinUser.store_id
-    })
+    const { users } = request.post()
+    let data
 
-    await user.load('branch')
+    if (users) {
+
+      data = []
+
+      for (let user of users) {
+        const _user = await User.create(user)
+        await _user.load('branch')
+        data.push(_user)
+      }
+
+    }
+
+    if (!users) {
+      data = await User.create({
+        ...request.only([
+          'email',
+          'password',
+          'full_name',
+          'access_level',
+          'status',
+          'username',
+          'branch_id'
+        ]),
+        store_id: loggedinUser.store_id
+      })
+
+      await data.load('branch')
+    }
 
     response.status(201).json({
       message: 'Successfully created a new user.',
-      data: user
+      data: data
     })
   }
 
