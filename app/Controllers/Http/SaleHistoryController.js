@@ -82,7 +82,9 @@ class SaleHistoryController {
     let builder = await SaleDetail.query()
       .where('id', id)
       .with('customerOrder.customer')
-      .with('sales.product')
+      .with('sales', builder => {
+        return builder.with('refund').with('product')
+      })
       .first()
     response.status(200).json({
       message: 'Successfully fetched sales history',

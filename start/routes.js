@@ -39,7 +39,7 @@ Route.post('/settings','SettingController.update').middleware(['authenticateToke
 //sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
 Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
-Route.get('/sale/:id','SaleController.show')
+Route.get('/sales/:id','SaleController.show')
 
 //Sales history
 Route.get('/sales-history','SaleHistoryController.index').middleware(['authenticateToken'])
