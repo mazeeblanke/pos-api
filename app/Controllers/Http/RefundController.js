@@ -45,12 +45,9 @@ class RefundController {
 
       sales_item.quantity = original_quantity - parseInt(product.quantity)
 
-      sales_item.sub_total =
-        parseFloat(sales_item.unit_price) * parseInt(sales_item.quantity)
+      sales_item.sub_total = parseFloat(sales_item.unit_price) * parseInt(sales_item.quantity)
 
-      totalAmountToRefund =
-        totalAmountToRefund +
-        (parseInt(product.quantity) + parseFloat(sales_item.unit_price))
+      totalAmountToRefund = totalAmountToRefund + (parseInt(product.quantity) + parseFloat(sales_item.unit_price))
 
       await sales_item.save(trx)
 

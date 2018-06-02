@@ -66,6 +66,8 @@ class ProductTransferController {
       transfer_record_history.push(transfer_record)
     }
 
+    // Event.fire('new::transfer_record_history', transfer_record_history)
+
     response.status(200).json({
       message: 'Transfer Done!',
       transfer_record_history
