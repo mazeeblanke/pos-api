@@ -45,7 +45,7 @@ class RefundController {
         .where('branch_id', branch_id)
         .where('product_id', product.id)
         .first()
-      product_branch.quantity = parseInt(product_branch.quantity) + parseInt(sales_item.quantity)
+      product_branch.quantity = parseInt(product_branch.quantity) + parseInt(product.quantity)
       await product_branch.save()
 
       const _SaleDetail = await SaleDetail

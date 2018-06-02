@@ -8,6 +8,7 @@ const Config = use('Config')
 const moment = require('moment')
 const gravatar = require('gravatar-api')
 const Mail = use('Mail')
+const Event = use('Event')
 const randomString = require('random-string')
 
 class RegisterController {
