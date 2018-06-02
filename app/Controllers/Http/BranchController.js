@@ -29,23 +29,32 @@ class BranchController {
   async store ({ request, response, auth }) {
     const loggedInUser = await auth.getUser()
     const store_id = loggedInUser.store_id
-    const branch = await Branch.create({
-      ...request.only([
-        'name',
-        'email',
-        'address',
-        'currency',
-        'receiptinfo',
-        'printout',
-        'discount',
-        'threshold'
-      ]),
-      store_id
-    })
+    const { branches } = request.post()
+    let data;
+
+    if (branches) {
+      data = await Branch.createMany(branches)
+    }
+
+    if (!branches) {
+      data = await Branch.create({
+        ...request.only([
+          'name',
+          'email',
+          'address',
+          'currency',
+          'receiptinfo',
+          'printout',
+          'discount',
+          'threshold'
+        ]),
+        store_id
+      })
+    }
 
     response.status(200).json({
       message: 'Successfully created branch !!',
-      data: branch
+      data: data
     })
   }
 

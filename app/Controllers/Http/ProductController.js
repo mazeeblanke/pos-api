@@ -39,6 +39,7 @@ class ProductController {
 
     products = await products
       .whereRaw(`LOWER("name") LIKE LOWER('%${name}%')`)
+      .orWhere('barcode', name)
       .orderBy('id', 'desc')
       .paginate(page, limit)
 

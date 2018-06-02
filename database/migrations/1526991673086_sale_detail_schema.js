@@ -17,6 +17,8 @@ class SaleDetailSchema extends Schema {
         .onUpdate('cascade')
       table.bigInteger('sales_id')
       table.decimal('tax', 15, 2)
+      table.decimal('threshold', 15, 2)
+      table.decimal('discount_per_threshold', 15, 2)
       table.decimal('discount', 15, 2)
       table.decimal('total', 15, 2)
       table.enu('payment_type', ['cash', 'card']).defaultTo('cash')

@@ -52,29 +52,40 @@ class CustomerController {
 
   async create () {}
 
-  async store ({ response, request }) {
-    const customer = await Customer.create(
-      request.only([
-        'full_name',
-        'phone',
-        'gender',
-        'store_id',
-        'marital_status',
-        'email',
-        'title',
-        'address',
-        'town',
-        'city',
-        'country',
-        'postalcode',
-        'cardnumber',
-        'date_of_birth'
-      ])
-    )
+  async store ({ response, request, auth }) {
+    const loggedInUser = await auth.getUser()
+    const store_id = loggedInUser.store_id
+    const { customers } = request.post()
+    let data
 
-    response.status(201).json({
+    if (customers) {
+      data = await Customer.createMany(customers)
+    }
+
+    if (!customers) {
+      data = await Customer.create(
+        request.only([
+          'full_name',
+          'phone',
+          'gender',
+          'store_id',
+          'marital_status',
+          'email',
+          'title',
+          'address',
+          'town',
+          'city',
+          'country',
+          'postalcode',
+          'cardnumber',
+          'date_of_birth'
+        ])
+      )
+    }
+
+    response.status(200).json({
       message: 'Successfully Registered customer',
-      data: customer
+      data: data
     })
   }
 

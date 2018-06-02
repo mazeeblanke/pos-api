@@ -1,13 +1,13 @@
 'use strict'
 
-const Sales = use('App/Models/Sale')
+const Sale = use('App/Models/Sale')
 const Customer_Orders = use('App/Models/CustomerOrder')
 const SaleDetail = use('App/Models/SaleDetail')
 const Branch_inventory = use('App/Models/ProductsBranch')
 
 class SaleController {
   async index ({ response }) {
-    const sales = await Sales.all()
+    const sales = await Sale.all()
 
     response.status(200).json({
       message: 'All Sales Transactions',
@@ -28,11 +28,13 @@ class SaleController {
       cashChange,
       subTotal,
       discountTotal,
+      discount_per_threshold,
       taxTotal,
       branch_id,
       store_id,
       customer_id,
       sales_id,
+      threshold,
       tax,
       payment_type,
       products,
@@ -46,6 +48,8 @@ class SaleController {
       tax,
       discount,
       branch_id,
+      threshold,
+      discount_per_threshold,
       store_id,
       payment_type,
       amount_paid: amountPaid,
@@ -91,7 +95,7 @@ class SaleController {
       await product_branch.save()
     }
 
-    const _products = await Sales.createMany(products)
+    const _products = await Sale.createMany(products)
 
     if (customer_id) {
       const cust_ord = await Customer_Orders.create({
@@ -113,19 +117,15 @@ class SaleController {
   }
 
   async show ({ response, params: { id } }) {
-    const sale = await Sales.query().where({ sales_id: id })
-
-    if (sale.length) {
-      response.status(200).json({
-        message: 'Single Sale Transaction',
-        data: sale
-      })
-    } else {
-      response.status(404).json({
-        message: 'sale record not found!',
-        id
-      })
-    }
+    let builder = await Sale.query()
+      .where('id', id)
+      .with('customerOrder.customer')
+      .with('product')
+      .first()
+    response.status(200).json({
+      message: 'Successfully fetched sales history',
+      data: builder
+    })
   }
 
   async edit () {}
