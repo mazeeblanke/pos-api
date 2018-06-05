@@ -91,8 +91,8 @@ Route.post('/password/resetpassword', 'PasswordController.resetPassword')
 
 
 // Expenditure
-Route.get('/expenditure', 'ExpenditureController.index')
-Route.post('/expenditure', 'ExpenditureController.store')
+Route.get('/expenditures', 'ExpenditureController.index')
+Route.post('/expenditures', 'ExpenditureController.store')
 
 
 // Opening Cash

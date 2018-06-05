@@ -1,36 +1,67 @@
 'use strict'
 
 const Expenditure = use('App/Models/Expenditure')
+const { parseDateTime } = require('../../../utils/helper')
 
 class ExpenditureController {
+  constructor () {
+    this.rawFilters = [
+      'type',
+      'title',
+      'amount'
+    ]
+  }
+
   async index ({ request, response}) {
     const reqData = request.all()
     const limit = reqData.limit || 20
-    const page = request.limit || 1
-    const store_id = reqData.store_id || ''
-    const branch_id = reqData.branch_id || ''
-    const user_id = reqData.user_id || ''
+    const page = reqData.page || 1
+    const store_id = reqData.store_id
+    const branch_id = reqData.branch_id
+    const user_id = reqData.user_id
+    const type = reqData.type
+    const title = reqData.title
+    const amount = reqData.title
+    const totime = reqData.totime 
+      ? parseDateTime(reqData.totime) 
+      : parseDateTime(Date.now())
+    const fromtime = reqData.fromtime 
+      ? parseDateTime(reqData.fromtime) 
+      : parseDateTime('0001-01-01')
 
-    let expenditures =  Expenditure.query()
+    let builder =  Expenditure
+    .query()
+    .orderBy('id', 'desc')
+    .with('user')
+    .with('store')
+    .with('branch')
+    .whereBetween('created_at', [fromtime, totime])
+
+    this.rawFilters.forEach(filter => {
+      if (reqData[filter]) {
+        builder = builder.whereRaw(`LOWER(${filter}) LIKE LOWER('%${reqData[filter]}%')`)
+      }
+    })
 
     if (store_id) {
-      expenditures = expenditures.where('store_id', store_id)
+      builder = builder.where('store_id', store_id)
     }
 
     if (branch_id) {
-      expenditures = expenditures.where('branch_id', branch_id).with('store')
+      builder = builder.where('branch_id', branch_id)
     }
 
     if (user_id) {
-      expenditures = expenditures.where('user_id', user_id).with('branch')
+      builder = builder.where('user_id', user_id)
     }
 
-    const _expenditure = await expenditures.paginate(page, limit)
+    const _expenditure = await builder.paginate(page, limit)
 
     response.status(200).json({
       message: 'All Expenditures',
-      _expenditure
+      data: _expenditure
     })
+
   }
 
   async create () {
@@ -56,7 +87,7 @@ class ExpenditureController {
 
     response.status(200).json({
       message: 'Expenditure Recorded!',
-      _expenditure
+      data: _expenditure
     })
   }
 

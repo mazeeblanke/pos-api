@@ -1,36 +1,54 @@
 'use strict'
 
 const Bankingcash = use('App/Models/Bankingcash')
+const { parseDateTime } = require('../../../utils/helper')
 
 class BankingcashController {
   async index ({ request, response}) {
     const reqData = request.all()
     const limit = reqData.limit || 20
-    const page = request.limit || 1
-    const store_id = reqData.store_id || ''
-    const branch_id = reqData.branch_id || ''
-    const from_user = reqData.from_user || ''
-    const to_user = reqData.to_user || ''
+    const page = reqData.page || 1
+    const store_id = reqData.store_id
+    const branch_id = reqData.branch_id
+    const from_user = reqData.from_user
+    const to_user = reqData.to_user
+    const totime = reqData.totime 
+      ? parseDateTime(reqData.totime) 
+      : parseDateTime(Date.now())
+    const fromtime = reqData.fromtime 
+      ? parseDateTime(reqData.fromtime) 
+      : parseDateTime('0001-01-01')
 
-    let bankingcash =  Bankingcash.query()
+    let Builder =  Bankingcash
+    .query()
+    .orderBy('id', 'desc')
+    .with('fromuser')
+    .with('touser')
+    .with('store')
+    .with('branch')
+    .whereBetween('created_at', [fromtime, totime])
 
     if (store_id) {
-      bankingcash = bankingcash.where('store_id', store_id)
+      Builder = Builder.where('store_id', store_id)
     }
 
     if (branch_id) {
-      bankingcash = bankingcash.where('branch_id', branch_id).with('store')
+      Builder = Builder.where('branch_id', branch_id)
     }
 
     if (from_user) {
-      bankingcash = bankingcash.where('user_id', from_user).with('branch')
+      Builder = Builder.where('from_user', from_user)
     }
 
-    const _bankingcash = await bankingcash.paginate(page, limit)
+    if (to_user) {
+      Builder = Builder.where('to_user', to_user)
+    }
+
+    const _bankingcash = await Builder.paginate(page, limit)
 
     response.status(200).json({
       message: 'All Banking Cash',
-      _bankingcash
+      data: _bankingcash
     })
   }
 

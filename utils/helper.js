@@ -16,8 +16,20 @@ const calculatePercentInCash = (percent, total) => {
   return parseAmount(Math.max(percent / 100 * total, 0))
 }
 
+const format = 'YYYY-MM-DD HH:mm:ss'
+
+const moment = require('moment')
+
 const parseColData = data => {
   return data || '-'
+}
+
+const parseDateTime = (d) => {
+  if (d) {
+    const dateTime = moment(d, format).format(format)
+    return moment(d, format).isValid() ? dateTime : moment().format(format)
+  }
+  return null
 }
 
 const calcSubTotal = items => {
@@ -39,5 +51,6 @@ module.exports = {
   calcSubTotal,
   parseAmount,
   sumCash,
-  multiplyCash
+  multiplyCash,
+  parseDateTime
 }

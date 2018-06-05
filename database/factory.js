@@ -100,3 +100,38 @@ Factory.blueprint('App/Models/Supplier', (faker, i, data) => {
     store_id: data.store_id || 1
   }
 })
+
+Factory.blueprint('App/Models/Expenditure', (faker, i, data) => {
+  return {
+    type: faker.word(),
+    title: faker.word(),
+    amount: faker.floating({ min: 0, max: 1000 }),
+    details: faker.sentence(),
+    store_id: data.store_id || 1,
+    user_id: data.user_id || 1,
+    branch_id: data.branch_id || 1
+  }
+})
+
+Factory.blueprint('App/Models/Openingcash', (faker, i, data) => {
+  return {
+    from_user: faker.integer({ min: 1, max: 50 }),
+    to_user: faker.integer({ min: 1, max: 50 }),
+    amount: faker.floating({ min: 0, max: 1000 }),
+    details: faker.sentence(),
+    store_id: data.store_id || 1,
+    branch_id: data.branch_id || 1
+  }
+})
+
+Factory.blueprint('App/Models/Bankingcash', (faker, i, data) => {
+  return {
+    from_user: faker.integer({ min: 1, max: 50 }),
+    to_user: faker.integer({ min: 1, max: 50 }),
+    amount: faker.floating({ min: 0, max: 1000 }),
+    details: faker.sentence(),
+    bank: faker.word(),
+    store_id: data.store_id || 1,
+    branch_id: data.branch_id || 1
+  }
+})
