@@ -31,6 +31,7 @@ class SalesSchema extends Schema {
         .onDelete('cascade')
         .onUpdate('cascade')
       table.integer('quantity')
+      table.integer('original_quantity_ordered')
       table.enu('payment_type', ['cash', 'card']).defaultTo('cash')
       table.bigInteger('sales_id')
       table.decimal('unit_price', 15, 2)
