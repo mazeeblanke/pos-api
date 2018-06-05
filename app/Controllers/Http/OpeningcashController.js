@@ -21,7 +21,6 @@ class OpeningcashController {
 
     let Builder =  Openingcash
     .query()
-    .query()
     .orderBy('id', 'desc')
     .with('from_user')
     .with('to_user')
