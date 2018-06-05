@@ -90,3 +90,13 @@ Factory.blueprint('App/Models/Branch', (faker, i, data) => {
     currency: {}
   }
 })
+
+Factory.blueprint('App/Models/Supplier', (faker, i, data) => {
+  return {
+    name: faker.name(),
+    address: faker.address(),
+    email: faker.email(),
+    phone: faker.phone(),
+    store_id: data.store_id || 1
+  }
+})

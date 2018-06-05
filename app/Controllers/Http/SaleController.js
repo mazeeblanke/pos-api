@@ -7,7 +7,7 @@ const Branch_inventory = use('App/Models/ProductsBranch')
 
 class SaleController {
   async index ({ response }) {
-    const sales = await Sale.all()
+    const sales = await Sale.query().with('refund').fetch()
 
     response.status(200).json({
       message: 'All Sales Transactions',
@@ -75,6 +75,7 @@ class SaleController {
           branch_id,
           unit_price,
           quantity,
+          original_quantity_ordered: quantity,
           payment_type,
           sale_details_id: _SaleDetail.id,
           sub_total

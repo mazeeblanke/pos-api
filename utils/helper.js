@@ -1,13 +1,12 @@
 const _ = require('lodash')
 
-const parseAmount = amount => parseFloat(amount.toFixed(2))
+const parseAmount = amount => parseFloat(amount.toFixed(5))
 
 const calculateDiscount = (subTotal, threshold, discount) => {
-  console.log(subTotal)
-  console.log(threshold)
-  console.log(discount)
   return threshold && parseAmount((subTotal / threshold) * discount)
 }
+
+const multiplyCash = (a, b) => (a * b).toFixed(2)
 
 const subtractCash = (cash1, cash2) => {
   return parseAmount(Math.max(cash1 - cash2, 0))
@@ -27,10 +26,7 @@ const calcSubTotal = items => {
 }
 
 const sumCash = cashList => {
-  // console.log('==============')
   return cashList.reduce((agg, cash) => {
-    // console.log(parseFloat(cash))
-    // console.log(agg)
     return agg + parseFloat(cash)
   }, 0)
 }
@@ -42,5 +38,6 @@ module.exports = {
   parseColData,
   calcSubTotal,
   parseAmount,
-  sumCash
+  sumCash,
+  multiplyCash
 }

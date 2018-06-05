@@ -57,6 +57,7 @@ Route.post('/products', 'ProductController.store').validator('Products').middlew
 
 // Product Inquiry
 Route.get('/productinquiry', 'ProductInquiryController.index')
+Route.patch('/productinquiry/:id', 'ProductInquiryController.update')
 Route.post('/productinquiry', 'ProductInquiryController.store')
 
 // Product Transfer
@@ -69,6 +70,12 @@ Route.get('/branch/:id', 'BranchController.show')
 Route.patch('/branch/:id', 'BranchController.update')
 Route.post('/branches', 'BranchController.store').validator('Branches')
 
+//supplier
+Route.get('/suppliers', 'SupplierController.index')
+Route.get('/suppliers/:id', 'SupplierController.show')
+Route.patch('/supplier/:id', 'SupplierController.update')
+Route.post('/suppliers', 'SupplierController.store').validator('Branches')
+
 // Customers
 Route.get('/customers', 'CustomerController.index')
 Route.get('/customers/:id', 'CustomerController.show')
@@ -76,6 +83,7 @@ Route.post('/customers', 'CustomerController.store').validator('Customers')
 Route.patch('/customer/:id', 'CustomerController.update')
 Route.delete('/customer/:id', 'CustomerController.delete')
 
+Route.get('/dashboard/stats', 'DashboardController.stats').middleware(['authenticateToken'])
 
 // Passwword
 Route.post('/password/emailcode', 'PasswordController.sendResetLinkEmail')

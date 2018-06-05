@@ -21,7 +21,7 @@ class Sale extends Model {
   }
 
   refund () {
-    return this.hasOne('App/Models/Refund', 'sale_id')
+    return this.hasMany('App/Models/Refund')
   }
 
 }
