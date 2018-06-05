@@ -12,21 +12,25 @@ Event.on('new::user', async (user) => {
 
 
 
-Event.on('new::transfer_record_history', async (transfer_record_history) => {
-  // await Mail.send('auth.emails.confirm_email', transfer_record_history.toJSON(), (message) => {
-  //   message.to()
-  //   message.from('from@email')
-  //   message.subject('Product Transfer Notification')
-  // })
+Event.on('new::transfer_record_history_branch_sender', async (branch_sender) => {
+  await Mail.send('auth.emails.product_transfer_notification_sender', branch_sender.toJSON(), (message) => {
+    // message.to(branch_sender.toJSON().branch.email)
+    message.to('easymax1069@gmail.com')
+    message.from('from@email')
+    message.subject('Product Transfer Notification Sender')
+  })
   console.log('branch_sender')
+  // console.log(branch_sender.toJSON().branch)
+  console.log(branch_sender.toJSON())
 })
 
 
-Event.on('new::transfer_record_history', async (transfer_record_history) => {
-  // await Mail.send('auth.emails.confirm_email', transfer_record_history.toJSON(), (message) => {
-  //   message.to()
+Event.on('new::transfer_record_history_branch_receiver', async (branch_receiver) => {
+  // await Mail.send('auth.emails.product_transfer_notification_reciever', branch_receiver.toJSON(), (message) => {
+  //   message.to(branch_receiver.branch.email)
   //   message.from('from@email')
-  //   message.subject('Product Transfer Notification')
+  //   message.subject('Product Transfer Notification Receiver')
   // })
-  console.log('branch_receiver')
+  // console.log('branch_receiver')
+  // console.log(branch_receiver.toJSON().product)
 })

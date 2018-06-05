@@ -2,6 +2,7 @@
 
 const Branch_inventory = use('App/Models/ProductsBranch')
 const Product_transfer = use('App/Models/ProductTransfer')
+const Event = use('Event')
 
 class ProductTransferController {
   async index({ request, response }) {
@@ -54,7 +55,7 @@ class ProductTransferController {
       .with('branch')
       .with('product')
       .first()
-
+        
       branch_receiver = add_to_branch
 
       // take_from_branch.quantity = take_from_branch.quantity - parseInt(product.quantity_transferred)
@@ -77,7 +78,9 @@ class ProductTransferController {
       transfer_record_history.push(transfer_record)
     }
 
-    // Event.fire('new::transfer_record_history', ['branch_sender','branch_receiver'])
+    // Event.fire('new::transfer_record_history', [branch_sender,branch_receiver])
+    Event.fire('new::transfer_record_history_branch_sender', branch_sender)
+    Event.fire('new::transfer_record_history_branch_receiver', branch_receiver)
 
     response.status(200).json({
       message: 'Transfer Done!',
