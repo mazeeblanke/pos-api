@@ -29,14 +29,14 @@ Route.patch('/user/:id', 'UserController.update')
 //user registeration
 Route.post('/register','RegisterController.store').validator('RegisterCompany')
 
-//user login
+// user login
 Route.post('/login','LoginController.store').validator('StoreUser')
 
-//settings
+// Settings
 Route.get('/settings','SettingController.index').middleware(['authenticateToken'])
 Route.post('/settings','SettingController.update').middleware(['authenticateToken'])
 
-//sales
+// sales
 Route.get('/sales','SaleController.index').middleware(['authenticateToken'])
 Route.post('/sales','SaleController.store').middleware(['authenticateToken'])
 Route.get('/sales/:id','SaleController.show')
@@ -45,26 +45,26 @@ Route.get('/sales/:id','SaleController.show')
 Route.get('/sales-history','SaleHistoryController.index').middleware(['authenticateToken'])
 Route.get('/sales-history/:id','SaleHistoryController.show').middleware(['authenticateToken'])
 
-//Refunds
+// Refunds
 Route.get('/refunds', 'RefundController.index')
 Route.post('/refunds', 'RefundController.store')
 
-//products
+// Products
 Route.get('/products','ProductController.index').middleware(['authenticateToken'])
 Route.get('/product/:id', 'ProductController.show').middleware(['authenticateToken'])
 Route.post('/product', 'ProductController.check').middleware(['authenticateToken'])
 Route.post('/products', 'ProductController.store').validator('Products').middleware(['authenticateToken'])
 
-//Product Inquiry
+// Product Inquiry
 Route.get('/productinquiry', 'ProductInquiryController.index')
 Route.patch('/productinquiry/:id', 'ProductInquiryController.update')
 Route.post('/productinquiry', 'ProductInquiryController.store')
 
-//product Transfer
+// Product Transfer
 Route.get('/producttransfer', 'ProductTransferController.index')
 Route.post('/producttransfer', 'ProductTransferController.store')
 
-//branch
+// Branch
 Route.get('/branches', 'BranchController.index')
 Route.get('/branch/:id', 'BranchController.show')
 Route.patch('/branch/:id', 'BranchController.update')
@@ -85,6 +85,20 @@ Route.delete('/customer/:id', 'CustomerController.delete')
 
 Route.get('/dashboard/stats', 'DashboardController.stats').middleware(['authenticateToken'])
 
-//passwword
+// Passwword
 Route.post('/password/emailcode', 'PasswordController.sendResetLinkEmail')
 Route.post('/password/resetpassword', 'PasswordController.resetPassword')
+
+
+// Expenditure
+Route.get('/expenditure', 'ExpenditureController.index')
+Route.post('/expenditure', 'ExpenditureController.store')
+
+
+// Opening Cash
+Route.get('/openingcash', 'OpeningcashController.index')
+Route.post('/openingcash', 'OpeningcashController.store')
+
+// Banking Cash
+Route.get('/bankingcash', 'BankingcashController.index')
+Route.post('/bankingcash', 'BankingcashController.store')
