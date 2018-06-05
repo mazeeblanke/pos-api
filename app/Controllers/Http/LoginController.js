@@ -11,21 +11,19 @@ class LoginController {
 
       const {email, password} = request.post()
 
-      // const user2 = await User.query().where('email', email).where('is_active', true).first()
-      // if (user2) {
-      //   const user_token = await auth.attempt(email, password)
-      // }
-
-
-      const user = await User.query().where({ email }).with('branch.store').first()
+      let user = await User.query().where({ email }).with('branch').with('store').first()
       const user_token = await auth.attempt(email, password)
+
+      user = user.toJSON()
 
       if (user_token) {
         response.status(200).json({
           message: 'Login Successful',
           token: user_token,
+          branch: user.branch,
+          store: user.store,
           user: {
-            ...user.toJSON(),
+            ...user,
             gravatar: gravatar.imageUrl({
               email: user.email,
               parameters: { "size": "200", "d": "retro" },

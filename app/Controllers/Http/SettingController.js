@@ -2,6 +2,7 @@
 const User = use('App/Models/User')
 const Store = use('App/Models/Store')
 const Branch = use('App/Models/Branch')
+const gravatar = require('gravatar-api')
 
 class SettingController {
   async index({ request, response, auth }) {
@@ -13,7 +14,13 @@ class SettingController {
       .json({
         message: "successfully fetched settings!",
         payload: {
-          loggedInUser,
+          loggedInUser: {
+            ...loggedInUser.toJSON(),
+            gravatar: gravatar.imageUrl({
+              email: loggedInUser.email,
+              parameters: { "size": "200", "d": "retro" },
+            })
+          },
           branch,
           store,
         }

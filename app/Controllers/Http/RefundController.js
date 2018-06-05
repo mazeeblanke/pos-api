@@ -156,6 +156,7 @@ class RefundController {
       sub_total
     )
 
+    
     _saleDetail.total = Math.max(
       sumCash([sub_total, -discountInCash, taxInCash]),
       0
