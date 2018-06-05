@@ -32,6 +32,8 @@ class ProductTransferController {
 
     const reqData = request.post().data
     let transfer_record_history = []
+    let branch_sender = {}
+    let branch_receiver = {}
 
     for (let product of reqData) {
 
@@ -39,19 +41,27 @@ class ProductTransferController {
       .where('store_id', product.store_id)
       .where('branch_id', product.from_branch_id)
       .where('product_id', product.product_id)
+      .with('product')
+      .with('branch')
       .first()
+
+      branch_sender = take_from_branch
 
       const add_to_branch = await Branch_inventory.query()
       .where('store_id', product.store_id)
       .where('branch_id', product.to_branch_id)
       .where('product_id', product.product_id)
+      .with('branch')
+      .with('product')
       .first()
 
-      take_from_branch.quantity = take_from_branch.quantity - parseInt(product.quantity_transferred)
-      add_to_branch.quantity = add_to_branch.quantity + parseInt(product.quantity_transferred)
+      branch_receiver = add_to_branch
 
-      await take_from_branch.save()
-      await add_to_branch.save()
+      // take_from_branch.quantity = take_from_branch.quantity - parseInt(product.quantity_transferred)
+      // add_to_branch.quantity = add_to_branch.quantity + parseInt(product.quantity_transferred)
+
+      // await take_from_branch.save()
+      // await add_to_branch.save()
 
       const transfer_record = await Product_transfer.create({
         transfer_id : product.transfer_id,
@@ -60,13 +70,14 @@ class ProductTransferController {
         to_branch_id : product.to_branch_id,
         product_id : product.product_id,
         quantity_transferred : product.quantity_transferred
-
       })
+
+      // console.log('take_from_branch: ', take_from_branch.product.toJSON())
 
       transfer_record_history.push(transfer_record)
     }
 
-    // Event.fire('new::transfer_record_history', transfer_record_history)
+    // Event.fire('new::transfer_record_history', ['branch_sender','branch_receiver'])
 
     response.status(200).json({
       message: 'Transfer Done!',
