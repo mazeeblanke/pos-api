@@ -42,9 +42,19 @@ class ProfitlossController {
       total_subtotal += parseFloat(prd.sub_total)
     })
 
-    const expenditure = await Expenditure.query().orderBy('id', 'desc').whereBetween('created_at', [from_time, to_time])
+    const expenditure = await Expenditure
+      .query()
+      .orderBy('id', 'desc')
+      .where('store_id',store_id)
+      .where('branch_id', branch_id)
+      .whereBetween('created_at', [from_time, to_time]);
 
-    const openingcash = await Openingcash.query().orderBy('id', 'desc').whereBetween('created_at', [from_time, to_time])
+    const openingcash = await Openingcash
+      .query()
+      .orderBy('id', 'desc')
+      .where('store_id',store_id)
+      .where('branch_id', branch_id)
+      .whereBetween('created_at', [from_time, to_time]);
 
     let total_expenditure = 0
     expenditure.forEach( element => {
