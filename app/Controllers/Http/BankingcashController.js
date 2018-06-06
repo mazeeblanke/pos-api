@@ -12,12 +12,8 @@ class BankingcashController {
     const branch_id = reqData.branch_id
     const from_user = reqData.from_user
     const to_user = reqData.to_user
-    const totime = reqData.totime 
-      ? parseDateTime(reqData.totime) 
-      : parseDateTime(Date.now())
-    const fromtime = reqData.fromtime 
-      ? parseDateTime(reqData.fromtime) 
-      : parseDateTime('0001-01-01')
+    const totime = reqData.totime ? parseDateTime(reqData.totime) : parseDateTime(Date.now())
+    const fromtime = reqData.fromtime ? parseDateTime(reqData.fromtime)  : parseDateTime('0001-01-01')
 
     let Builder =  Bankingcash
     .query()
@@ -85,7 +81,36 @@ class BankingcashController {
   async edit () {
   }
 
-  async update () {
+  async update ({ params: { id }, response, request}) {
+    let bankingcash = await Bankingcash.find(id)
+
+    if (bankingcash) {
+      const {
+        from_user,
+        to_user,
+        amount,
+        bank,
+        details
+      } = request.post()
+
+      let payload = {
+        from_user,
+        to_user,
+        amount,
+        bank,
+        details
+      }
+
+      bankingcash.merge(payload)
+
+      await bankingcash.save()
+
+      response.status(200).json({
+        message: 'Updated',
+        data: bankingcash
+      })
+    }
+
   }
 
   async destroy () {

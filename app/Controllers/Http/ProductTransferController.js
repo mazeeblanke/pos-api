@@ -55,14 +55,14 @@ class ProductTransferController {
       .with('branch')
       .with('product')
       .first()
-        
+
       branch_receiver = add_to_branch
 
-      // take_from_branch.quantity = take_from_branch.quantity - parseInt(product.quantity_transferred)
-      // add_to_branch.quantity = add_to_branch.quantity + parseInt(product.quantity_transferred)
+      take_from_branch.quantity = take_from_branch.quantity - parseInt(product.quantity_transferred)
+      add_to_branch.quantity = add_to_branch.quantity + parseInt(product.quantity_transferred)
 
-      // await take_from_branch.save()
-      // await add_to_branch.save()
+      await take_from_branch.save()
+      await add_to_branch.save()
 
       const transfer_record = await Product_transfer.create({
         transfer_id : product.transfer_id,

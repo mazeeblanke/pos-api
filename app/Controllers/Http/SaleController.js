@@ -39,7 +39,8 @@ class SaleController {
       payment_type,
       products,
       discount,
-      customer
+      customer,
+      costprice
     } = request.post()
 
     const _SaleDetail = await SaleDetail.create({
@@ -78,7 +79,8 @@ class SaleController {
           original_quantity_ordered: quantity,
           payment_type,
           sale_details_id: _SaleDetail.id,
-          sub_total
+          sub_total,
+          costprice
         }
       })
       .filter(p => p)

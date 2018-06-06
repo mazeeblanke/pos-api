@@ -98,7 +98,13 @@ Route.post('/expenditures', 'ExpenditureController.store')
 // Opening Cash
 Route.get('/openingcash', 'OpeningcashController.index')
 Route.post('/openingcash', 'OpeningcashController.store')
+Route.patch('/openingcash/:id', 'OpeningcashController.update')
+
 
 // Banking Cash
 Route.get('/bankingcash', 'BankingcashController.index')
 Route.post('/bankingcash', 'BankingcashController.store')
+
+
+// Profit and Loss
+Route.get('/profitloss', 'ProfitlossController.index')

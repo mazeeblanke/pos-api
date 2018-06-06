@@ -12,11 +12,11 @@ class OpeningcashController {
     const branch_id = reqData.branch_id
     const from_user = reqData.from_user
     const to_user = reqData.to_user
-    const totime = reqData.totime 
-      ? parseDateTime(reqData.totime) 
+    const totime = reqData.totime
+      ? parseDateTime(reqData.totime)
       : parseDateTime(Date.now())
-    const fromtime = reqData.fromtime 
-      ? parseDateTime(reqData.fromtime) 
+    const fromtime = reqData.fromtime
+      ? parseDateTime(reqData.fromtime)
       : parseDateTime('0001-01-01')
 
     let Builder =  Openingcash
@@ -75,6 +75,37 @@ class OpeningcashController {
       message: 'All Open Cash!',
       data: _openingcash
     })
+  }
+
+  async update ({ request, response }) {
+    let openingcash = await Openingcash.find(id)
+
+    if(openingcash) {
+      const {
+        amount,
+        from_user,
+        to_user,
+        details
+      } = request.post()
+
+      let payload = {
+        amount,
+        from_user,
+        to_user,
+        details
+      }
+
+      openingcash.merge(payload)
+
+      await openingcash.save()
+
+
+      response.status(200).json({
+        message: 'Updated',
+        data: openingcash
+      })
+    }
+
   }
 }
 
