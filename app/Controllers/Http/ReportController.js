@@ -2,6 +2,7 @@
 
 const Sale = use('App/Models/Sale')
 const SaleDetail = use('App/Models/SaleDetail')
+const _ = require('lodash')
 const { parseDateTime } = require('../../../utils/helper')
 
 class ReportController {
@@ -20,32 +21,36 @@ class ReportController {
     const fromtime = reqData.fromtime
       ? parseDateTime(reqData.fromtime)
       : parseDateTime('0001-01-01')
-    let Builder;  
+    let Builder
+    let Results
 
     if (report_type === 'product') {
       Builder = Sale
       .query()
-      .with('user')
-      .with('refund')
+      // .with('user')
+      // .with('refund')
       .with('product')
-      .with('store')
-      .with('branch')
+      // .with('store')
+      // .with('branch')
       .whereBetween('created_at', [fromtime, totime])
       .where('branch_id', branch_id)
       .where('store_id', store_id)
       .orderBy(type, direction)
       .limit(limit)
 
-    }
+      Results = await Builder.fetch()
+      // Results = await Builder.sum('profit as profit')
+       
+      Results = _.groupBy(Results.toJSON(), (r) => r.product_id)
 
-    const Results = await Builder.fetch()
+    }
     
     response.status(200).json({
       message: 'Successfully fetched results',
       data: Results,
       meta: {
         direction,
-        type,
+        type: type === 'sub_total' ? 'total' : type,
         report_type,
         totime,
         fromtime,

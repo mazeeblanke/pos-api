@@ -4,13 +4,13 @@ const Model = use('Model')
 
 class Sale extends Model {
 
-  // static get computed () {
-  //   return ['profit']
-  // }
+  static get computed () {
+    return ['total']
+  }
 
-  // getProfit ({ quantity, cost_price, sub_total }) {
-  //   return  (sub_total - (quantity * cost_price))
-  // }
+  getTotal ({ sub_total }) {
+    return sub_total
+  }
 
   customerOrder () {
     return this.belongsTo(
