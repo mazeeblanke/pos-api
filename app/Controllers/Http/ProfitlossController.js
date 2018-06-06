@@ -1,6 +1,8 @@
 'use strict'
 
 const Sale = use('App/Models/Sale')
+const Expenditure = use('App/Models/Expenditure')
+const Openingcash = use('App/Models/Openingcash')
 const { parseDateTime } = require('../../../utils/helper')
 
 class ProfitlossController {
@@ -27,28 +29,48 @@ class ProfitlossController {
     }
 
     const _sales = await builder.paginate(page, limit)
+
     let total_unitprice = 0
     let total_costprice = 0
+    let total_profit = 0
+    let total_subtotal = 0
+
     _sales.toJSON().data.forEach(prd => {
-      total_unitprice += prd.unit_price
-      total_costprice += prd.costprice
+      total_unitprice += parseFloat(prd.unit_price)
+      total_costprice += parseFloat(prd.cost_price)
+      total_profit += parseFloat(prd.profit)
+      total_subtotal += parseFloat(prd.sub_total)
     })
 
-    let total_profitloss = total_unitprice - total_costprice
+    const expenditure = await Expenditure.query().orderBy('id', 'desc').whereBetween('created_at', [from_time, to_time])
+
+    const openingcash = await Openingcash.query().orderBy('id', 'desc').whereBetween('created_at', [from_time, to_time])
+
+    let total_expenditure = 0
+    expenditure.forEach( element => {
+      total_expenditure += parseFloat(element.amount)
+    })
+
+    let total_openingcash = 0
+    openingcash.forEach( element => {
+      total_openingcash += parseFloat(element.amount)
+    })
+
+    let total_profitloss = (total_profit + total_openingcash) - parseFloat(total_expenditure)
 
     response.status(200).json({
       message: 'Sales Total',
-      data: _sales,
-      total_profitloss: total_profitloss
+      total_unitprice: total_unitprice,
+      total_profit: total_profit,
+      total_subtotal: total_subtotal,
+      total_costprice: total_costprice,
+      total_profitloss: total_profitloss,
+      total_expenditure: total_expenditure,
+      total_openingcash: total_openingcash
+
     })
 
   }
 }
 
 module.exports = ProfitlossController
-
-// go through all sales
-
-// go throiuhg original price
-
-// add threshold

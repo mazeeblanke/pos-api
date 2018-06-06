@@ -82,8 +82,7 @@ class SaleController {
           original_quantity_ordered: quantity,
           payment_type,
           sale_details_id: _SaleDetail.id,
-          sub_total,
-          costprice
+          sub_total
         }
       })
       .filter(p => p)
