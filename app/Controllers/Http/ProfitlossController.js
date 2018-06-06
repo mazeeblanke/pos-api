@@ -76,7 +76,8 @@ class ProfitlossController {
       total_costprice: total_costprice,
       total_profitloss: total_profitloss,
       total_expenditure: total_expenditure,
-      total_openingcash: total_openingcash
+      total_openingcash: total_openingcash,
+      expenditure: expenditure
 
     })
 
