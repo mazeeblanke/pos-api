@@ -56,6 +56,7 @@ class ProductInquiryController {
     .with('user')
     .with('customer')
     .with('product')
+    .orderBy('id', 'desc')
     .fetch()
 
     response.status(201).json({

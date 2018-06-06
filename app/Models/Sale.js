@@ -4,6 +4,14 @@ const Model = use('Model')
 
 class Sale extends Model {
 
+  // static get computed () {
+  //   return ['profit']
+  // }
+
+  // getProfit ({ quantity, cost_price, sub_total }) {
+  //   return  (sub_total - (quantity * cost_price))
+  // }
+
   customerOrder () {
     return this.belongsTo(
       'App/Models/CustomerOrder', 
@@ -22,6 +30,14 @@ class Sale extends Model {
 
   refund () {
     return this.hasMany('App/Models/Refund')
+  }
+
+  branch() {
+    return this.belongsTo("App/Models/Branch", "branch_id");
+  }
+
+  store() {
+    return this.belongsTo("App/Models/Store", "store_id");
   }
 
 }

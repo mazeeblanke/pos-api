@@ -105,6 +105,6 @@ Route.patch('/openingcash/:id', 'OpeningcashController.update')
 Route.get('/bankingcash', 'BankingcashController.index')
 Route.post('/bankingcash', 'BankingcashController.store')
 
+Route.get('/reports', 'ReportController.index')
 
-// Profit and Loss
 Route.get('/profitloss', 'ProfitlossController.index')

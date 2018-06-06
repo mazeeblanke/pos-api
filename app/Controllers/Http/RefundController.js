@@ -32,6 +32,7 @@ class RefundController {
       .with('branch')
       .with('user')
       .with('customerOrder.customer')
+      .orderBy('id', 'desc')
     
 
     if (product_id) {
@@ -75,64 +76,66 @@ class RefundController {
     let totalAmountToRefund = 0
 
     for (let product of products) {
-      const sales_item = await Sale.query()
-        .where('store_id', store_id)
-        .where('branch_id', branch_id)
-        .where('sales_id', sales_id)
-        .where('product_id', product.id)
-        .first()
+      if (product.quantity) {
+          const sales_item = await Sale.query()
+          .where('store_id', store_id)
+          .where('branch_id', branch_id)
+          .where('sales_id', sales_id)
+          .where('product_id', product.id)
+          .first()
 
-      let original_quantity = sales_item.quantity
+          let original_quantity = sales_item.quantity
 
-      sales_item.quantity = subtractCash(
-        +original_quantity,
-        +product.quantity
-      )
+          sales_item.quantity = subtractCash(
+            +original_quantity,
+            +product.quantity
+          )
 
-      sales_item.sub_total = multiplyCash(
-        +sales_item.unit_price, 
-        +sales_item.quantity
-      )
+          sales_item.sub_total = multiplyCash(
+            +sales_item.unit_price, 
+            +sales_item.quantity
+          )
 
-      const amountToRefund = multiplyCash(
-        +product.quantity, 
-        +sales_item.unit_price
-      )  
+          const amountToRefund = multiplyCash(
+            +product.quantity, 
+            +sales_item.unit_price
+          )  
 
-      totalAmountToRefund += +amountToRefund
+          totalAmountToRefund += +amountToRefund
 
-      await sales_item.save(trx)
+          await sales_item.save(trx)
 
-      const branch_inventory = await BranchInventory.query()
-        .where('branch_id', branch_id)
-        .where('product_id', product.id)
-        .first()
+          const branch_inventory = await BranchInventory.query()
+            .where('branch_id', branch_id)
+            .where('product_id', product.id)
+            .first()
 
-      branch_inventory.quantity = sumCash([
-        +branch_inventory.quantity,
-        +product.quantity
-      ])
+          branch_inventory.quantity = sumCash([
+            +branch_inventory.quantity,
+            +product.quantity
+          ])
 
-      await branch_inventory.save(trx)
+          await branch_inventory.save(trx)
 
-      const refund = await Refund.create(
-        {
-          sale_id: sales_item.id,
-          sale_details_id: sales_item.sale_details_id,
-          product_id: sales_item.product_id,
-          store_id: sales_item.store_id,
-          branch_id: sales_item.branch_id,
-          user_id: sales_item.user_id,
-          quantity_ordered: original_quantity,
-          quantity_returned: product.quantity,
-          amount_refunded: amountToRefund,
-          unit_price: product.unitprice
-        },
-        trx
-      )
+          const refund = await Refund.create(
+            {
+              sale_id: sales_item.id,
+              sale_details_id: sales_item.sale_details_id,
+              product_id: sales_item.product_id,
+              store_id: sales_item.store_id,
+              branch_id: sales_item.branch_id,
+              user_id: sales_item.user_id,
+              quantity_ordered: original_quantity,
+              quantity_returned: product.quantity,
+              amount_refunded: amountToRefund,
+              unit_price: product.unitprice
+            },
+            trx
+          )
 
-      Sales.push(sales_item.toJSON())
-    }
+          Sales.push(sales_item.toJSON())
+        }
+      }
 
     const _saleDetail = await SaleDetail.query()
       .where('sales_id', sales_id)

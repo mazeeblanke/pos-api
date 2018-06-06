@@ -69,9 +69,21 @@ class BankingcashController {
       _bankingcash.push(saved_bnkcash)
     }
 
+    _bankingcash = _bankingcash.map(e => e.id)
+
+    const Bankingcashes = await Bankingcash
+    .query()
+    .whereIn('id', _bankingcash)
+    .orderBy('id', 'desc')
+    .with('fromuser')
+    .with('touser')
+    .with('store')
+    .with('branch')
+    .fetch()
+
     response.status(200).json({
-      message: 'All Open Cash!',
-      _bankingcash
+      message: 'successfully saved banking cash',
+      data: Bankingcashes
     })
   }
 
