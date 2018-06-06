@@ -39,7 +39,8 @@ class SaleController {
       payment_type,
       products,
       discount,
-      customer
+      customer,
+      costprice
     } = request.post()
 
     const _SaleDetail = await SaleDetail.create({
