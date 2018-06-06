@@ -37,7 +37,9 @@ class UserController {
       builder.with('branch')
     }
 
-    const users = await builder.orderBy('id', 'desc').paginate(page, limit)
+    const users = await builder
+    .orderBy('id', 'desc')
+    .paginate(page, limit)
 
     response.status(200).json({
       message: 'All Users',

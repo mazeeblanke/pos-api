@@ -85,9 +85,20 @@ class ExpenditureController {
       _expenditure.push(saved_expd)
     }
 
+    _expenditure = _expenditure.map(e => e.id)
+
+    const expenditures = await Expenditure
+    .query()
+    .whereIn('id', _expenditure)
+    .orderBy('id', 'desc')
+    .with('user')
+    .with('store')
+    .with('branch')
+    .fetch()
+
     response.status(200).json({
       message: 'Expenditure Recorded!',
-      data: _expenditure
+      data: expenditures
     })
   }
 

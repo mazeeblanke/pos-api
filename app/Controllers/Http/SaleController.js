@@ -63,6 +63,7 @@ class SaleController {
           id: product_id,
           name,
           unitprice: unit_price,
+          costprice: cost_price,
           quantity,
           subTotal: sub_total
         } = p
@@ -74,6 +75,8 @@ class SaleController {
           store_id,
           branch_id,
           unit_price,
+          cost_price,
+          profit: (sub_total - (cost_price * quantity)),
           quantity,
           original_quantity_ordered: quantity,
           payment_type,

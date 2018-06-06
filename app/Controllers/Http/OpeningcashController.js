@@ -22,8 +22,8 @@ class OpeningcashController {
     let Builder =  Openingcash
     .query()
     .orderBy('id', 'desc')
-    .with('from_user')
-    .with('to_user')
+    .with('fromuser')
+    .with('touser')
     .with('store')
     .with('branch')
     .whereBetween('created_at', [fromtime, totime])
@@ -54,25 +54,34 @@ class OpeningcashController {
   }
 
   async store ({ request, response}) {
-    const openingcash = request.post().openingcash
-    let _openingcash = []
+    let openingcash = request.post().openingcash
 
-    for (let opncash of openingcash) {
-      const saved_opncash = await Openingcash.create({
-        store_id: opncash.store_id,
-        branch_id: opncash.branch_id,
-        amount: opncash.amount,
-        from_user: opncash.from_user,
-        to_user: opncash.to_user,
-        details: opncash.details
-      })
+    openingcash = openingcash.map((o) => ({
+      store_id: o.store_id,
+      branch_id: o.branch_id,
+      amount: o.amount,
+      from_user: o.from_user,
+      to_user: o.to_user,
+      details: o.details
+    }))
 
-      _openingcash.push(saved_opncash)
-    }
+    let _openingcash = await Openingcash.createMany(openingcash)
+
+    _openingcash = _openingcash.map(e => e.id)
+
+    const openingcashes = await Openingcash
+    .query()
+    .whereIn('id', _openingcash)
+    .orderBy('id', 'desc')
+    .with('fromuser')
+    .with('touser')
+    .with('store')
+    .with('branch')
+    .fetch()
 
     response.status(200).json({
-      message: 'All Open Cash!',
-      data: _openingcash
+      message: 'Successfully saved opening cash',
+      data: openingcashes
     })
   }
 }
