@@ -106,5 +106,6 @@ Route.get('/bankingcash', 'BankingcashController.index')
 Route.post('/bankingcash', 'BankingcashController.store')
 
 Route.get('/reports', 'ReportController.index')
+Route.get('/report', 'ReportController.productreport')
 
 Route.get('/profitloss', 'ProfitlossController.index')
