@@ -44,7 +44,17 @@ class BankingcashController {
 
     response.status(200).json({
       message: 'All Banking Cash',
-      data: _bankingcash
+      data: _bankingcash,
+      meta: {
+        limit,
+        page,
+        branch_id,
+        from_user,
+        to_user,
+        totime,
+        fromtime,
+        store_id
+      }
     })
   }
 

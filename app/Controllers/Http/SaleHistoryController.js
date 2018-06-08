@@ -36,10 +36,10 @@ class SaleHistoryController {
     let builder
 
     if (parseInt(aggregate)) {
-      builder = SaleDetail.query()
+      builder = SaleDetail.query().orderBy('sale_details_id', 'desc')
       this.filterBy = this.filterBy.concat(SALE_DETAILS_FILTERS)
     } else {
-      builder = Sale.query().with('product')
+      builder = Sale.query().with('product').orderBy('id', 'desc')
       this.filterBy = this.filterBy.concat(SALES_FILTERS)
     }
 
@@ -56,7 +56,7 @@ class SaleHistoryController {
       // .with('customerOrder.customer')
     }
 
-    if (with_customer) {
+    if (parseInt(with_customer)) {
       builder = builder.with('customerOrder.customer')
     }
 
@@ -65,12 +65,21 @@ class SaleHistoryController {
     }
 
     const sales_history = await builder
-      .orderBy('id', 'desc')
       .paginate(page, limit)
 
     response.status(200).json({
       message: 'Successfully fetched sales history',
-      body: sales_history
+      body: sales_history,
+       meta: {
+        limit,
+        page,
+        branch_id: req['branch_id'],
+        aggregate,
+        customer_id,
+        with_customer,
+        with_user,
+        store_id: req['store_id']
+      }
     })
   }
 
@@ -80,10 +89,15 @@ class SaleHistoryController {
 
   async show ({ params: { id }, response, auth }) {
     let builder = await SaleDetail.query()
-      .where('id', id)
+      .where('sale_details_id', id)
       .with('customerOrder.customer')
+      .with('user')
       .with('sales', builder => {
-        return builder.with('refund').with('product')
+        return builder
+        .with('refund')
+        .with('product')
+        .with('branch')
+        .with('user')
       })
       .first()
     response.status(200).json({

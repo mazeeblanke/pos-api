@@ -52,6 +52,7 @@ Route.post('/refunds', 'RefundController.store')
 // Products
 Route.get('/products','ProductController.index').middleware(['authenticateToken'])
 Route.get('/product/:id', 'ProductController.show').middleware(['authenticateToken'])
+Route.patch('/products/:id', 'ProductController.update').middleware(['authenticateToken'])
 Route.post('/product', 'ProductController.check').middleware(['authenticateToken'])
 Route.post('/products', 'ProductController.store').validator('Products').middleware(['authenticateToken'])
 

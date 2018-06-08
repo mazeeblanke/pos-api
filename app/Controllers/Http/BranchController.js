@@ -20,7 +20,13 @@ class BranchController {
 
     response.status(200).json({
       message: 'successfully loaded branches !!',
-      data: branches
+      data: branches,
+       meta: {
+        limit,
+        name,
+        page,
+        store_id
+      }
     })
   }
 

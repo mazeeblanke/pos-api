@@ -11,7 +11,11 @@ class Product extends Model {
   }
 
   productBranches () {
-    return this.hasMany('App/Models/ProductsBranch')
+    return this.hasMany('App/Models/ProductsBranch', 'id')
+  }
+
+  productBranch () {
+    return this.hasOne('App/Models/ProductsBranch', 'id')
   }
 
 }

@@ -22,6 +22,7 @@ class ProductsBranchesSchema extends Schema {
         .onDelete('cascade')
         .onUpdate('cascade');
       table.integer('store_id').references('stores.id')
+      table.bigInteger('reorder')
       table.timestamps()
     })
   }

@@ -26,6 +26,10 @@ class Store extends Model {
     return value
   }
 
+  productBranches () {
+    return this.hasMany('App/Models/ProductsBranch', 'id')
+  }
+
   branches() {
     return this.hasMany('App/Models/Branch')
   }

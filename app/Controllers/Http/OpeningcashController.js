@@ -49,7 +49,17 @@ class OpeningcashController {
 
     response.status(200).json({
       message: 'All Opening Cash',
-      data: _openingcash
+      data: _openingcash,
+      meta: {
+        limit,
+        page,
+        branch_id,
+        from_user,
+        to_user,
+        totime,
+        fromtime,
+        store_id
+      }
     })
   }
 

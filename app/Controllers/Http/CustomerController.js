@@ -46,7 +46,22 @@ class CustomerController {
 
     response.status(200).json({
       message: 'All Cutomers.',
-      data: customers
+      data: customers,
+      meta: {
+        limit,
+        page,
+        branch_id: reqData['branch_id'],
+        email: reqData['email'],
+        city: reqData['city'],
+        country: reqData['country'],
+        phone: reqData['phone'],
+        address: reqData['address'],
+        gender: reqData['gender'],
+        with_store,
+        phone: reqData['phone'],
+        status: reqData['status'],
+        store_id: reqData['store_id']
+      }
     })
   }
 

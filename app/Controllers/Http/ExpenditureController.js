@@ -21,7 +21,7 @@ class ExpenditureController {
     const user_id = reqData.user_id
     const type = reqData.type
     const title = reqData.title
-    const amount = reqData.title
+    const amount = reqData.amount
     const totime = reqData.totime 
       ? parseDateTime(reqData.totime) 
       : parseDateTime(Date.now())
@@ -59,7 +59,18 @@ class ExpenditureController {
 
     response.status(200).json({
       message: 'All Expenditures',
-      data: _expenditure
+      data: _expenditure,
+      meta: {
+        limit,
+        page,
+        branch_id,
+        title,
+        amount,
+        type,
+        totime,
+        fromtime,
+        store_id
+      }
     })
 
   }

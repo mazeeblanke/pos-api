@@ -2,6 +2,7 @@
 
 const Product = use('App/Models/Product')
 const ProductsBranch = use('App/Models/ProductsBranch')
+const Store = use('App/Models/Store')
 
 
 class ProductController {
@@ -14,8 +15,9 @@ class ProductController {
       ? Boolean(parseInt(reqData.strict))
       : true
     let store_id = reqData.store_id
-    let products = Product.query()
     let branch_id = reqData.branch_id
+    let below_reorder = reqData.below_reorder || 0
+    let products = Product.query()
 
     if (store_id) {
       products = products.where('store_id', store_id)
@@ -37,6 +39,14 @@ class ProductController {
       })
     }
 
+    if (parseInt(below_reorder)) {
+      products = products
+        .whereHas('productBranches', builder => {
+          builder.whereRaw('product_branches.quantity < product_branches.reorder')
+        })
+        .with('productBranch')
+    }
+
     products = await products
       .whereRaw(`LOWER("name") LIKE LOWER('%${name}%')`)
       .orWhere('barcode', name)
@@ -45,7 +55,14 @@ class ProductController {
 
     response.status(200).json({
       message: 'All Product',
-      products
+      products,
+      meta: {
+        limit,
+        name,
+        page,
+        branch_id,
+        store_id
+      }
     })
   }
 
@@ -112,8 +129,15 @@ class ProductController {
     }
   }
 
-  async show ({ response, params: { id } }) {
-    const product = await Product.find(id)
+  async show ({ request, response, params: { id } }) {
+    const req = request.all()
+    const product = await Product
+    .query()
+    .where('id', id)
+    .with('productBranch', builder => {
+      builder.where('branch_id', req.branch_id).with('branch')
+    })
+    .first()
 
     if (product) {
       response.status(200).json({
@@ -131,7 +155,59 @@ class ProductController {
 
   async edit () {}
 
-  async update () {}
+  async update ({ params: { id }, response, request }) {
+    let product = await Product.find(id)
+    const req = request.all()
+    let productBranch
+    let updated
+
+    if (product) {
+      product.merge(
+        request.only([
+          'name',
+          'quantity',
+          'unitprice',
+          'costprice',
+          'barcode',
+          'store_id',
+          'reorder',
+          'status'
+        ]),
+      )
+
+      await product.save()
+
+      if (req.productBranches.id) {
+        productBranch = await ProductsBranch
+        .find(req.productBranches.id)
+      }
+       
+      if (req.productBranches && productBranch) {
+        productBranch.merge(req.productBranches)
+        await productBranch.save()
+      } else if (req.productBranches && !productBranch) {
+        productBranch = await ProductsBranch.create(req.productBranches)
+      } 
+
+      await productBranch.load('branch')
+
+      let results = {
+        ...product.toJSON(),
+        productBranch
+      }
+
+      response.status(200).json({
+        message: 'Successfully updated product details',
+        data: results
+      })
+
+    } else {
+      response.status(404).json({
+        message: 'Product not found',
+        id
+      })
+    }
+  }
 
   async destroy () {}
 }

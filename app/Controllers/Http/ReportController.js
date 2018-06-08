@@ -13,7 +13,7 @@ class ReportController {
     const branch_id = reqData.branch_id
     const direction = reqData.direction || 'desc'
     let type = reqData.type || 'quantity'
-    const report_type = reqData.report_type
+    const report_type = reqData.report_type || 'product'
     const totime = reqData.totime
       ? parseDateTime(reqData.totime)
       : parseDateTime("4000-04-12")
@@ -68,10 +68,10 @@ class ReportController {
     
     response.status(200).json({
       message: 'Successfully fetched results',
-      data: Results.rows,
+      data: Results ? Results.rows : [],
       meta: {
-        direction,
-        type: type === 'sub_total' ? 'total' : type,
+        direction: direction === 'asc'? 'TOP' : 'Bottom',
+        type,
         report_type,
         totime,
         fromtime,
@@ -126,7 +126,7 @@ class ReportController {
     }
 
     return await Database.raw(`
-      SELECT users.*, j.* FROM users 
+      SELECT users.*, j.*, users.id AS employee_id FROM users 
       JOIN (
         ${subQuery}
         WHERE branch_id = ${payload.branch_id} AND

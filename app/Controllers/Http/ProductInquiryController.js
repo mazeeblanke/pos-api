@@ -9,8 +9,8 @@ class ProductInquiryController {
     const limit = reqData.limit || 10
     const name = reqData.name || ''
     const page = reqData.page || 1
-    const branch_id = reqData.branch || 1
-    const store_id = reqData.store || 1
+    const branch_id = reqData.branch_id || 1
+    const store_id = reqData.store_id || 1
     const productInq = await Product_inquiry.query()
     .where('store_id', store_id)
     .where('branch_id', branch_id)
@@ -24,7 +24,14 @@ class ProductInquiryController {
 
     response.status(200).json({
       message: 'Product Inquiry Success',
-      data: productInq
+      data: productInq,
+      meta: {
+        limit,
+        name,
+        page,
+        branch_id,
+        store_id
+      }
     })
 
   }

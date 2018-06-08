@@ -15,9 +15,17 @@ class SaleDetail extends Model {
   customerOrder () {
     return this.hasOne(
       'App/Models/CustomerOrder',
-      'id',
+      'sale_details_id',
       'sale_details_id'
     )
+  }
+
+  branch() {
+    return this.belongsTo("App/Models/Branch", "branch_id");
+  }
+
+  store() {
+    return this.belongsTo("App/Models/Store", "store_id");
   }
 
   user () {
