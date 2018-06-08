@@ -14,7 +14,7 @@ const Factory = use('Factory')
 
 class OpeningCashSeeder {
   async run () {
-     await Factory.model('App/Models/Openingcash').createMany(100)
+    //  await Factory.model('App/Models/Openingcash').createMany(100)
   }
 }
 

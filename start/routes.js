@@ -62,6 +62,7 @@ Route.post('/productinquiry', 'ProductInquiryController.store')
 
 // Product Transfer
 Route.get('/producttransfer', 'ProductTransferController.index')
+// Route.post('/producttransfer', 'ProductTransferController.frombranch')
 Route.post('/producttransfer', 'ProductTransferController.store')
 
 // Branch
