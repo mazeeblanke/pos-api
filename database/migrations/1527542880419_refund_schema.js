@@ -13,7 +13,7 @@ class RefundSchema extends Schema {
           .inTable('sales')
           .onDelete('cascade')
           .onUpdate('cascade')
-      table.integer('sale_details_id').references('sale_details.id')
+      table.integer('sale_details_id').references('sale_details.sale_details_id')
       table.integer('product_id').references('products.id')
       table.integer('store_id').references('stores.id')
       table.integer('branch_id').references('branches.id')

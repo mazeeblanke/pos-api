@@ -4,6 +4,14 @@ const Model = use('Model')
 
 class SaleDetail extends Model {
 
+  // static get primaryKey () {
+  //   return 'sale_details_id'
+  // }
+
+  static get primaryKey () {
+    return 'sale_details_id'
+  }
+
   customerOrder () {
     return this.hasOne(
       'App/Models/CustomerOrder',

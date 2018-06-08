@@ -81,7 +81,7 @@ class SaleController {
           quantity,
           original_quantity_ordered: quantity,
           payment_type,
-          sale_details_id: _SaleDetail.id,
+          sale_details_id: _SaleDetail.sale_details_id,
           sub_total
         }
       })
@@ -105,7 +105,7 @@ class SaleController {
     if (customer_id) {
       const cust_ord = await Customer_Orders.create({
         customer_id,
-        sale_details_id: _SaleDetail.id,
+        sale_details_id: _SaleDetail.sale_details_id,
         gross: total
       })
       response.status(200).json({
