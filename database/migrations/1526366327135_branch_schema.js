@@ -9,7 +9,6 @@ class BranchSchema extends Schema {
       table
         .string('email', 254)
         .notNullable()
-        .unique()
       table
         .string('name', 255)
         .notNullable()
