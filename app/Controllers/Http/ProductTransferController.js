@@ -12,17 +12,21 @@ class ProductTransferController {
     const limit = reqData.limit || 20
     const page = reqData.page || 1
     const store_id = reqData.store_id || 1
+    const branch_id = reqData.branch_id || 1
     const user_id = reqData.user_id || 1
     const totime = reqData.totime ? parseDateTime(reqData.totime) : parseDateTime(Date.now())
     const fromtime = reqData.fromtime ? parseDateTime(reqData.fromtime)  : parseDateTime('0001-01-01')
 
     let prd_trans = await Product_transfer
     .query()
+    .where('store_id', store_id)
+    .where('to_branch_id', branch_id)
     .orderBy('id', 'desc')
     .with('user')
     .with('store')
     .with('branch')
     .with('product')
+    .whereBetween('created_at', [fromtime, totime])
     .paginate(page, limit)
 
     response.status(200).json({
@@ -101,10 +105,22 @@ class ProductTransferController {
             .first()
 
           source_branch_product.quantity = parseInt(source_branch_product.quantity) - parseInt(product.quantity_to_transfer)
-          destination_branch_product.quantity = parseInt(destination_branch_product.quantity) + parseInt(product.quantity_to_transfer)
+          if (destination_branch_product) {
+            destination_branch_product.quantity = parseInt(destination_branch_product.quantity) + parseInt(product.quantity_to_transfer)
+
+            await destination_branch_product.save()
+          }
+
+          else {
+            Products_branch.create({
+              quantity: product.quantity_to_transfer,
+              product_id: product.product_id,
+              branch_id: product.to_branch_id,
+              store_id: product.store_id
+            })
+          }
 
           await source_branch_product.save()
-          await destination_branch_product.save()
 
           const transfer_record = await Product_transfer.create({
             transfer_id : product.transfer_id,
