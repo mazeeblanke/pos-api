@@ -9,11 +9,15 @@ class ProductTransfer extends Model {
   }
 
   branch() {
-    return this.belongsTo('App/Models/Branch')
+    return this.belongsTo('App/Models/Branch', 'to_branch_id')
   }
 
   store() {
     return this.belongsTo('App/Models/Store', 'store_id')
+  }
+
+  user () {
+    return this.belongsTo('App/Models/User', 'user_id')
   }
 }
 

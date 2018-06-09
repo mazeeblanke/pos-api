@@ -12,17 +12,19 @@ class ProductTransferController {
     const limit = reqData.limit || 20
     const page = reqData.page || 1
     const store_id = reqData.store_id || 1
+    const user_id = reqData.user_id || 1
     const totime = reqData.totime ? parseDateTime(reqData.totime) : parseDateTime(Date.now())
     const fromtime = reqData.fromtime ? parseDateTime(reqData.fromtime)  : parseDateTime('0001-01-01')
 
     let prd_trans = await Product_transfer
     .query()
     .orderBy('id', 'desc')
+    .with('user')
     .with('store')
-    // .with('branch')
+    .with('branch')
     .with('product')
     .paginate(page, limit)
-    
+
     response.status(200).json({
       message: 'product transfer !!',
       data: prd_trans
@@ -62,6 +64,7 @@ class ProductTransferController {
         const transfer_record = await Product_transfer.create({
           transfer_id : product.transfer_id,
           store_id : product.store_id,
+          user_id: product.user_id,
           source_id : product.source_id,
           to_branch_id : product.to_branch_id,
           product_id : product.product_id,
@@ -106,6 +109,7 @@ class ProductTransferController {
           const transfer_record = await Product_transfer.create({
             transfer_id : product.transfer_id,
             store_id : product.store_id,
+            user_id: product.user_id,
             source_id : product.source_id,
             to_branch_id : product.to_branch_id,
             product_id : product.product_id,
