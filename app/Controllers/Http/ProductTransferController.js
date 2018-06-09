@@ -12,12 +12,15 @@ class ProductTransferController {
     const limit = reqData.limit || 20
     const page = reqData.page || 1
     const store_id = reqData.store_id || 1
+    const branch_id = reqData.branch_id || 1
     const user_id = reqData.user_id || 1
     const totime = reqData.totime ? parseDateTime(reqData.totime) : parseDateTime(Date.now())
     const fromtime = reqData.fromtime ? parseDateTime(reqData.fromtime)  : parseDateTime('0001-01-01')
 
     let prd_trans = await Product_transfer
     .query()
+    .where('store_id', store_id)
+    .where('to_branch_id', branch_id)
     .orderBy('id', 'desc')
     .with('user')
     .with('store')
