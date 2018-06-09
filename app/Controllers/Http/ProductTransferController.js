@@ -26,6 +26,7 @@ class ProductTransferController {
     .with('store')
     .with('branch')
     .with('product')
+    .whereBetween('created_at', [fromtime, totime])
     .paginate(page, limit)
 
     response.status(200).json({
@@ -104,10 +105,22 @@ class ProductTransferController {
             .first()
 
           source_branch_product.quantity = parseInt(source_branch_product.quantity) - parseInt(product.quantity_to_transfer)
-          destination_branch_product.quantity = parseInt(destination_branch_product.quantity) + parseInt(product.quantity_to_transfer)
+          if (destination_branch_product) {
+            destination_branch_product.quantity = parseInt(destination_branch_product.quantity) + parseInt(product.quantity_to_transfer)
+
+            await destination_branch_product.save()
+          }
+
+          else {
+            Products_branch.create({
+              quantity: product.quantity_to_transfer,
+              product_id: product.product_id,
+              branch_id: product.to_branch_id,
+              store_id: product.store_id
+            })
+          }
 
           await source_branch_product.save()
-          await destination_branch_product.save()
 
           const transfer_record = await Product_transfer.create({
             transfer_id : product.transfer_id,
