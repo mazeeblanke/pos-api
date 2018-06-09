@@ -1,6 +1,7 @@
 'use strict'
 
 const User = use('App/Models/User')
+const Event = use('Event')
 
 const filters = {
   username: { type: 'raw' },
@@ -94,8 +95,11 @@ class UserController {
         store_id: loggedinUser.store_id
       })
 
-      await data.load('branch')
+       await data.load('branch')
     }
+
+    // console.log(data)
+    Event.fire('new::new_user', data)
 
     response.status(201).json({
       message: 'Successfully created a new user.',

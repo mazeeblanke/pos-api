@@ -1,28 +1,30 @@
 'use strict'
 
-const Branch_inventory = use('App/Models/ProductsBranch')
+const Products_branch = use('App/Models/ProductsBranch')
 const Product_transfer = use('App/Models/ProductTransfer')
+const Products = use('App/Models/Product')
 const Event = use('Event')
+const { parseDateTime } = require('../../../utils/helper')
 
 class ProductTransferController {
   async index({ request, response }) {
-    // const reqData = request.all()
-    // const limit = reqData.limit || 20
-    // const store_id = reqData.store_id || 1
-    // const from_branch_id = reqData.from_branch_id || 1
-    // const page = reqData.page || 1
-    // const to_branch_id = reqData.to_branch_id || 1
-    // const product_id = reqData.product_id || 1
+    const reqData = request.all()
+    const limit = reqData.limit || 20
+    const page = reqData.page || 1
+    const store_id = reqData.store_id || 1
+    const user_id = reqData.user_id || 1
+    const totime = reqData.totime ? parseDateTime(reqData.totime) : parseDateTime(Date.now())
+    const fromtime = reqData.fromtime ? parseDateTime(reqData.fromtime)  : parseDateTime('0001-01-01')
 
+    let prd_trans = await Product_transfer
+    .query()
+    .orderBy('id', 'desc')
+    .with('user')
+    .with('store')
+    .with('branch')
+    .with('product')
+    .paginate(page, limit)
 
-    // const prd_trans = await Product_transfer.query()
-    // .where('store_id', store_id)
-    // .where('from_branch_id', from_branch_id)
-    // .where('to_branch_id', to_branch_id)
-    // .where('product_id', product_id)
-    // .paginate(page, limit)
-
-    const prd_trans = await Product_transfer.all()
     response.status(200).json({
       message: 'product transfer !!',
       data: prd_trans
@@ -30,62 +32,105 @@ class ProductTransferController {
   }
 
   async store ({ request, response, auth}) {
-
-    const reqData = request.post().data
+    const reqData = request.post()
+    const source = reqData.source || ''
     let transfer_record_history = []
-    let branch_sender = {}
-    let branch_receiver = {}
 
-    for (let product of reqData) {
+    switch(source) {
 
-      const take_from_branch = await Branch_inventory.query()
-      .where('store_id', product.store_id)
-      .where('branch_id', product.from_branch_id)
-      .where('product_id', product.product_id)
-      .with('product')
-      .with('branch')
-      .first()
+      case 'store':
 
-      branch_sender = take_from_branch
+        for (let product of reqData.data) {
 
-      const add_to_branch = await Branch_inventory.query()
-      .where('store_id', product.store_id)
-      .where('branch_id', product.to_branch_id)
-      .where('product_id', product.product_id)
-      .with('branch')
-      .with('product')
-      .first()
+        const source_store_product = await Products
+          .query()
+          .where('store_id', product.store_id)
+          .where('id', product.product_id)
+          .first()
 
-      branch_receiver = add_to_branch
+        const destination_branch_product = await Products_branch
+          .query()
+          .where('store_id', product.store_id)
+          .where('branch_id', product.to_branch_id)
+          .where('product_id', product.product_id)
+          .first()
 
-      take_from_branch.quantity = take_from_branch.quantity - parseInt(product.quantity_transferred)
-      add_to_branch.quantity = add_to_branch.quantity + parseInt(product.quantity_transferred)
+        source_store_product.quantity = parseInt(source_store_product.quantity) - parseInt(product.quantity_to_transfer)
+        destination_branch_product.quantity = parseInt(destination_branch_product.quantity) + parseInt(product.quantity_to_transfer)
 
-      await take_from_branch.save()
-      await add_to_branch.save()
+        await source_store_product.save()
+        await destination_branch_product.save()
 
-      const transfer_record = await Product_transfer.create({
-        transfer_id : product.transfer_id,
-        store_id : product.store_id,
-        from_branch_id : product.from_branch_id,
-        to_branch_id : product.to_branch_id,
-        product_id : product.product_id,
-        quantity_transferred : product.quantity_transferred
-      })
+        const transfer_record = await Product_transfer.create({
+          transfer_id : product.transfer_id,
+          store_id : product.store_id,
+          user_id: product.user_id,
+          source_id : product.source_id,
+          to_branch_id : product.to_branch_id,
+          product_id : product.product_id,
+          quantity_transferred : product.quantity_to_transfer,
+          source: source
+        })
 
-      // console.log('take_from_branch: ', take_from_branch.product.toJSON())
+        transfer_record_history.push(transfer_record)
+        }
 
-      transfer_record_history.push(transfer_record)
+        response.status(200).json({
+          message: 'Product Transfer Complete! --Store',
+          source: source,
+          transfer_record_history: transfer_record_history
+        })
+
+      break;
+
+      case 'branch':
+
+        for (let product of reqData.data) {
+          const source_branch_product = await Products_branch
+            .query()
+            .where('store_id', product.store_id)
+            .where('branch_id', product.source_id)
+            .where('product_id', product.product_id)
+            .first()
+
+          const destination_branch_product = await Products_branch
+            .query()
+            .where('store_id', product.store_id)
+            .where('branch_id', product.to_branch_id)
+            .where('product_id', product.product_id)
+            .first()
+
+          source_branch_product.quantity = parseInt(source_branch_product.quantity) - parseInt(product.quantity_to_transfer)
+          destination_branch_product.quantity = parseInt(destination_branch_product.quantity) + parseInt(product.quantity_to_transfer)
+
+          await source_branch_product.save()
+          await destination_branch_product.save()
+
+          const transfer_record = await Product_transfer.create({
+            transfer_id : product.transfer_id,
+            store_id : product.store_id,
+            user_id: product.user_id,
+            source_id : product.source_id,
+            to_branch_id : product.to_branch_id,
+            product_id : product.product_id,
+            quantity_transferred : product.quantity_to_transfer,
+            source: source
+          })
+
+          transfer_record_history.push(transfer_record)
+        }
+
+        response.status(200).json({
+          message: 'Product Transfer Complete! --Branch',
+          source: source,
+          transfer_record_history: transfer_record_history
+        })
+        break;
+
+      default:
+      console.log('DAFAULT DEFAULT')
     }
 
-    // Event.fire('new::transfer_record_history', [branch_sender,branch_receiver])
-    Event.fire('new::transfer_record_history_branch_sender', branch_sender)
-    Event.fire('new::transfer_record_history_branch_receiver', branch_receiver)
-
-    response.status(200).json({
-      message: 'Transfer Done!',
-      transfer_record_history
-    })
   }
 
 }

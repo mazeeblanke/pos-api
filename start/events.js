@@ -11,6 +11,14 @@ Event.on('new::user', async (user) => {
 })
 
 
+Event.on('new::new_user', async (data) => {
+  await Mail.send('auth.emails.welcome_email', data.toJSON(), (message) => {
+    message.to(data.email)
+    message.from('from@email')
+    message.subject('Welcome')
+  })
+})
+
 
 Event.on('new::transfer_record_history_branch_sender', async (branch_sender) => {
   await Mail.send('auth.emails.product_transfer_notification_sender', branch_sender.toJSON(), (message) => {

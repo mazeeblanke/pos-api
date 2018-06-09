@@ -63,6 +63,7 @@ Route.post('/productinquiry', 'ProductInquiryController.store')
 
 // Product Transfer
 Route.get('/producttransfer', 'ProductTransferController.index')
+// Route.post('/producttransfer', 'ProductTransferController.frombranch')
 Route.post('/producttransfer', 'ProductTransferController.store')
 
 // Branch
@@ -107,5 +108,6 @@ Route.get('/bankingcash', 'BankingcashController.index')
 Route.post('/bankingcash', 'BankingcashController.store')
 
 Route.get('/reports', 'ReportController.index')
+Route.get('/report', 'ReportController.productreport')
 
 Route.get('/profitloss', 'ProfitlossController.index')
