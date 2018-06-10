@@ -18,6 +18,8 @@ const calculatePercentInCash = (percent, total) => {
 
 const format = 'YYYY-MM-DD HH:mm:ss'
 
+const ucFirst = s => s.charAt(0).toUpperCase() + s.slice(1)
+
 const moment = require('moment')
 
 const parseColData = data => {
@@ -52,5 +54,6 @@ module.exports = {
   parseAmount,
   sumCash,
   multiplyCash,
-  parseDateTime
+  parseDateTime,
+  ucFirst
 }
